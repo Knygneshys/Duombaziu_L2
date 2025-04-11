@@ -1,0 +1,35 @@
+﻿@page "/"
+@using Trikotazo_Parduotuve.Entities
+@using Trikotazo_Parduotuve.Repositories
+@inject SupplierRepository SupplierRepository;
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+@if(suppliers is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    foreach(Supplier supplier in suppliers)
+    {
+        <p>@supplier.ToString()</p>
+    }
+}
+
+@code{
+    private List<Supplier> suppliers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSuppliers();
+    }
+
+    private async Task LoadSuppliers()
+    {
+        suppliers = await SupplierRepository.GetAllSupliersAsync();
+    }
+}
