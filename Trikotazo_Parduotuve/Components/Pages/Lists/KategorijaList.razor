@@ -1,0 +1,32 @@
+﻿@page "/KategorijaList"
+@using Trikotazo_Parduotuve.Entities
+@using Trikotazo_Parduotuve.Repositories
+@inject KategorijaRepository kategorijaRepository
+@rendermode InteractiveServer
+
+<h3>Kategorijos</h3>
+
+@if(kategorijos is null)
+{
+    <h2>Loading...</h2>
+}
+else
+{
+    
+}
+
+@code {
+    private List<Kategorija> kategorijos;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadKategorijas();
+
+    }
+
+    private async Task LoadKategorijas()
+    {
+        kategorijos = await kategorijaRepository.GetAllAsync();
+    }
+}

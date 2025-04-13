@@ -4,6 +4,7 @@
 @inject IRepository<Kategorija> kategorijaRepository;
 @inject IRepository<Subkategorija> subkategorijaRepository;
 @inject IRepository<Trikotazas> trikotazasRepository;
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
@@ -41,10 +42,18 @@ else
     }
 }
 
+@if(visible)
+{
+    <p>VEIKIA</p>
+}
+
+<button @onclick=Work >Spausk</button>
+
 @code{
     private List<Kategorija> kategorijos;
     private List<Subkategorija> subkategorijos;
     private List<Trikotazas> trikotazai;
+    public bool visible = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -66,5 +75,10 @@ else
     private async Task LoadTrikotazus()
     {
         trikotazai = await trikotazasRepository.GetAllAsync();
+    }
+
+    public void Work()
+    {
+        visible = true;
     }
 }
