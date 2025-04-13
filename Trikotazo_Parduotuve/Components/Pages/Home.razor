@@ -1,35 +1,70 @@
 ﻿@page "/"
 @using Trikotazo_Parduotuve.Entities
 @using Trikotazo_Parduotuve.Repositories
-@inject SupplierRepository SupplierRepository;
+@inject IRepository<Kategorija> kategorijaRepository;
+@inject IRepository<Subkategorija> subkategorijaRepository;
+@inject IRepository<Trikotazas> trikotazasRepository;
+
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
 
-@if(suppliers is null)
+@if (kategorijos is null)
 {
     <p>Loading...</p>
 }
 else
 {
-    foreach(Supplier supplier in suppliers)
+    <p>Kategorijos:</p>
+    foreach(Kategorija kategorija in kategorijos)
     {
-        <p>@supplier.ToString()</p>
+        <h3>@kategorija.pavadinimas</h3>
+        <p>@kategorija.aprasymas</p>
+    }
+}
+
+@if(subkategorijos is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <p>Subkategorijos:</p>
+    foreach(Subkategorija subkategorija in subkategorijos)
+    {
+        <h3>@subkategorija.pavadinimas</h3>
+        <p>@subkategorija.lytis</p>
+        <p>@subkategorija.aprasymas</p>
+        <p>@subkategorija.kategorija</p>
     }
 }
 
 @code{
-    private List<Supplier> suppliers;
+    private List<Kategorija> kategorijos;
+    private List<Subkategorija> subkategorijos;
+    private List<Trikotazas> trikotazai;
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadSuppliers();
+        await LoadKategorijas();
+        await LoadSubkategorijas();
+        await LoadTrikotazus();
     }
 
-    private async Task LoadSuppliers()
+    private async Task LoadKategorijas()
     {
-        suppliers = await SupplierRepository.GetAllSupliersAsync();
+        kategorijos = await kategorijaRepository.GetAllAsync();
+    }
+
+    private async Task LoadSubkategorijas()
+    {
+        subkategorijos = await subkategorijaRepository.GetAllAsync();
+    }
+
+    private async Task LoadTrikotazus()
+    {
+        trikotazai = await trikotazasRepository.GetAllAsync();
     }
 }

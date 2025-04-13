@@ -5,7 +5,9 @@ namespace Trikotazo_Parduotuve
 {
     public class StoreDataContext : DbContext
     {
-        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Kategorija> Kategorijos { get; set; }
+        public DbSet<Subkategorija> Subkategorijos { get; set; }
+        public DbSet<Trikotazas> Trikotazai { get; set; }
 
         public StoreDataContext(DbContextOptions options) : base(options)
         {

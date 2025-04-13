@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Trikotazo_Parduotuve;
 using Trikotazo_Parduotuve.Components;
+using Trikotazo_Parduotuve.Repositories;
+using Trikotazo_Parduotuve.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,9 @@ builder.Services.AddDbContext<StoreDataContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
 
-builder.Services.AddScoped<Trikotazo_Parduotuve.Repositories.SupplierRepository>();
+builder.Services.AddScoped<IRepository<Trikotazas>, TrikotazasRepository>();
+builder.Services.AddScoped<IRepository<Kategorija>, KategorijaRepository>();
+builder.Services.AddScoped<IRepository<Subkategorija>, SubkategorijaRepository>();
 
 var app = builder.Build();
 

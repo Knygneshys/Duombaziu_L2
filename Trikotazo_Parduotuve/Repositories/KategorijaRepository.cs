@@ -3,19 +3,19 @@ using Trikotazo_Parduotuve.Entities;
 
 namespace Trikotazo_Parduotuve.Repositories
 {
-    public class SupplierRepository
+    public class KategorijaRepository : IRepository<Kategorija>
     {
         private readonly StoreDataContext _context;
 
-        public SupplierRepository(StoreDataContext context)
+        public KategorijaRepository(StoreDataContext context)
         {
             _context = context;
         }
 
-        public async Task<List<Supplier>> GetAllSupliersAsync()
+        public async Task<List<Kategorija>> GetAllAsync()
         {
-            return await _context.Suppliers
-                .FromSqlRaw("SELECT * FROM tiekejas")
+            return await _context.Kategorijos
+                .FromSqlRaw("SELECT * FROM kategorija")
                 .ToListAsync();
         }
     }
