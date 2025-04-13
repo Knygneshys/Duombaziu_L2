@@ -15,9 +15,10 @@ builder.Services.AddDbContext<StoreDataContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
 
-builder.Services.AddScoped<IRepository<Trikotazas>, TrikotazasRepository>();
+
 builder.Services.AddScoped<IRepository<Kategorija>, KategorijaRepository>();
 builder.Services.AddScoped<IRepository<Subkategorija>, SubkategorijaRepository>();
+builder.Services.AddScoped<IRepository<Trikotazas>, TrikotazasRepository>();
 
 var app = builder.Build();
 

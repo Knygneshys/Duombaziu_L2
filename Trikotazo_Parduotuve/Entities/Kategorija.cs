@@ -7,7 +7,7 @@ namespace Trikotazo_Parduotuve.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string pavadinimas { get; set; }
-        public string? aprasymas { get; set; }
+        public string Pavadinimas { get; set; }
+        public string? Aprasymas { get; set; }
     }
 }

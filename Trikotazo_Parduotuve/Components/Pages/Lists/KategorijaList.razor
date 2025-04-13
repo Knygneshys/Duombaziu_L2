@@ -1,7 +1,8 @@
 ﻿@page "/KategorijaList"
 @using Trikotazo_Parduotuve.Entities
 @using Trikotazo_Parduotuve.Repositories
-@inject KategorijaRepository kategorijaRepository
+@inject IRepository<Kategorija> kategorijaRepository
+@inject NavigationManager navigationManager;
 @rendermode InteractiveServer
 
 <h3>Kategorijos</h3>
@@ -12,12 +13,28 @@
 }
 else
 {
-    
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Pavadinimas</th>
+                <th scope="col">Aprašymas</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(Kategorija kategorija in kategorijos)
+            {
+                <tr>
+                    <td>@kategorija.Pavadinimas</td>
+                    <td>@kategorija.Aprasymas</td>
+                    <td><button @onclick="()=>GoToKategorijaForm(kategorija)">Peržiūrėti</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
 @code {
-    private List<Kategorija> kategorijos;
-
+    public List<Kategorija> kategorijos;
 
     protected override async Task OnInitializedAsync()
     {
@@ -28,5 +45,10 @@ else
     private async Task LoadKategorijas()
     {
         kategorijos = await kategorijaRepository.GetAllAsync();
+    }
+
+    public void GoToKategorijaForm(Kategorija kategorija)
+    {
+        navigationManager.NavigateTo($"/KategorijaForm/{kategorija.Pavadinimas}");
     }
 }
