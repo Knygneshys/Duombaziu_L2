@@ -27,11 +27,11 @@ namespace Trikotazo_Parduotuve.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task Remove(Subkategorija subkategorija)
+        public async Task Remove(string pavadinimas, int lytis)
         {
             await _context.Database
                 .ExecuteSqlRawAsync("DELETE FROM subkategorija WHERE Pavadinimas = {0} and Lytis = {1}",
-                subkategorija.Pavadinimas, (int)subkategorija.Lytis);
+                pavadinimas, lytis);
         }
     }
 }

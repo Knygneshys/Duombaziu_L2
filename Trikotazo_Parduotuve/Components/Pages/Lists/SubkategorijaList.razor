@@ -10,7 +10,7 @@
 <h3>Subkategorijos</h3>
 
 
-@if (subkategorijos is null)
+@if (f1Items is null)
 {
     <h2>Loading...</h2>
 }
@@ -43,25 +43,36 @@ else
     </table>
 }
 
+@if (deletionWarningIsVisible)
+{
+    <h3 style="color:red">This item has tables relating to it!</h3>
+}
+
 @code {
     private List<F1> f1Items;
-    public List<Subkategorija> subkategorijos;
+    private bool deletionWarningIsVisible = false;
 
     protected override async Task OnInitializedAsync()
     {
         f1Items = await f1Repository.GetAllAsync();
-        subkategorijos = await subkategorijaRepository.GetAllAsync();
     }
 
-    public void GoToSubkategorijaForm(F1 subkategorija)
+    public void GoToSubkategorijaForm(F1 joinedTables)
     {
-        navigationManager.NavigateTo($"/SubkategorijaForm/{subkategorija.Pavadinimas}/{subkategorija.Lytis}");
+        navigationManager.NavigateTo($"/SubkategorijaForm/{joinedTables.Pavadinimas}/{joinedTables.Lytis}");
     }
 
 
-    public async Task DeleteSubkategorija(F1 subkategorija)
+    public async Task DeleteSubkategorija(F1 joinedTables)
     {
-        // await subkategorijaRepository.Remove(subkategorija);
-        // subkategorijos.Remove(subkategorija);
+        try
+        {
+            deletionWarningIsVisible = false;
+            await subkategorijaRepository.Remove(joinedTables.Pavadinimas, (int)joinedTables.Lytis);
+            navigationManager.NavigateTo(navigationManager.Uri, true);
+        } catch (Exception e)
+        {
+            deletionWarningIsVisible = true;
+        }
     }
 }
