@@ -23,13 +23,7 @@ else
         </div>
 
         <div class="form-group">
-            <label>Lytis:</label>
-            <InputSelect @bind-Value="placeHolder.Lytis" class="form-control" style="width:100px">
-                @foreach(Lytis lytis in Enum.GetValues(typeof(Lytis)))
-                {
-                    <option value="@lytis" >@lytis</option>
-                }
-            </InputSelect>
+            <label>Lytis: <b>@placeHolder.Lytis</b></label>
         </div>
 
         <div class="form-group">
@@ -55,41 +49,42 @@ else
     </EditForm>
 }
 <br />
-@if(trikotazai != null)
+@if(trikotazai != null && trikotazai.Count > 0)
 {
     <table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th scope="col">Pavadinimas</th>
-            <th scope="col">Kaina</th>
-            <th scope="col">Medžiaga</th>
-            <th scope="col">Dydis</th>
-            <th scope="col">Spalva</th>
-            <th scope="col">Kiekis</th>
-            <th scope="col">Paskutinis atnaujinimas</th>
-            <th scope="col">Subkategorija</th>
-            <th scope="col">Lytis</th>
-            <th scope="col">Tiekejas</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(Trikotazas trikotazas in trikotazai)
-        {
+        <thead>
             <tr>
-                <td>@trikotazas.Pavadinimas</td>
-                <td>@trikotazas.Kaina</td>
-                <td>@trikotazas.Medziaga</td>
-                <td>@trikotazas.Dydis</td>
-                <td>@trikotazas.Spalva</td>
-                <td>@trikotazas.Kiekis</td>
-                <td>@trikotazas.Paskutinis_atnaujinimas.ToShortDateString()</td>
-                <td>@trikotazas.Fk_SUBKATEGORIJA_pav</td>
-                <td>@trikotazas.Fk_SUBKATEGORIJA_lytis</td>
-                <td>@trikotazas.Fk_TIEKEJAS</td>
-                <td><button @onclick="()=>GoToTrikotazasForm(trikotazas)">Peržiūrėti</button></td>
+                <th scope="col">Pavadinimas</th>
+                <th scope="col">Kaina</th>
+                <th scope="col">Medžiaga</th>
+                <th scope="col">Dydis</th>
+                <th scope="col">Spalva</th>
+                <th scope="col">Kiekis</th>
+                <th scope="col">Paskutinis atnaujinimas</th>
+                <th scope="col">Subkategorija</th>
+                <th scope="col">Lytis</th>
+                <th scope="col">Tiekejas</th>
             </tr>
-        }
-    </tbody>
+        </thead>
+        <tbody>
+            @foreach(Trikotazas trikotazas in trikotazai)
+            {
+                <tr>
+                    <td>@trikotazas.Pavadinimas</td>
+                    <td>@trikotazas.Kaina</td>
+                    <td>@trikotazas.Medziaga</td>
+                    <td>@trikotazas.Dydis</td>
+                    <td>@trikotazas.Spalva</td>
+                    <td>@trikotazas.Kiekis</td>
+                    <td>@trikotazas.Paskutinis_atnaujinimas.ToShortDateString()</td>
+                    <td>@trikotazas.Fk_SUBKATEGORIJA_pav</td>
+                    <td>@trikotazas.Fk_SUBKATEGORIJA_lytis</td>
+                    <td>@trikotazas.Fk_TIEKEJAS</td>
+                    <td><button @onclick="()=>GoToTrikotazasForm(trikotazas)">Peržiūrėti</button></td>
+                    <td><button @onclick="()=>DeleteTrikotazas(trikotazas)">Ištrinti</button></td>
+                </tr>
+            }
+        </tbody>
     </table>
 }
 @code {
@@ -115,12 +110,19 @@ else
     public async Task UpdateDB()
     {
         await subkategorijaRepository.UpdateEntity(subkategorija.Pavadinimas, (int)subkategorija.Lytis, placeHolder);
+
         subkategorija = await subkategorijaRepository.GetByKey(placeHolder.Pavadinimas, placeHolder.Lytis);
-        placeHolder = new Subkategorija(subkategorija);
+        trikotazai = await trikotazasRepository.GetFilteredBySubkategorija(placeHolder.Pavadinimas, (int)placeHolder.Lytis);
+
         navigationManager.NavigateTo($"/SubkategorijaForm/{placeHolder.Pavadinimas}/{placeHolder.Lytis}", forceLoad: true);
     }
 
     public void GoToTrikotazasForm(Trikotazas trikotazas)
+    {
+
+    }
+
+    public void DeleteTrikotazas(Trikotazas trikotazas)
     {
         
     }
