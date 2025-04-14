@@ -7,6 +7,7 @@ namespace Trikotazo_Parduotuve
     {
         public DbSet<Kategorija> Kategorijos { get; set; }
         public DbSet<Subkategorija> Subkategorijos { get; set; }
+        public DbSet<F1> F1 { get; set; }
         public DbSet<Tiekejas> Tiekejai { get; set; }
         public DbSet<Trikotazas> Trikotazai { get; set; }
 

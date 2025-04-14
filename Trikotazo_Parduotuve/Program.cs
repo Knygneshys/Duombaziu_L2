@@ -18,6 +18,7 @@ builder.Services.AddDbContext<StoreDataContext>(options =>
 
 builder.Services.AddScoped<KategorijaRepository>();
 builder.Services.AddScoped<SubkategorijaRepository>();
+builder.Services.AddScoped<F1Repository>();
 builder.Services.AddScoped<TiekejasRepository>();
 builder.Services.AddScoped<TrikotazasRepository>();
 

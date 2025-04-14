@@ -24,8 +24,8 @@ else
             @foreach(Kategorija kategorija in kategorijos)
             {
                 <tr>
-                    <td>@kategorija.Pavadinimas</td>
-                    <td>@kategorija.Aprasymas</td>
+                    <td>@kategorija.Pav</td>
+                    <td>@kategorija.Aprasas</td>
                     <td><button @onclick="()=>GoToKategorijaForm(kategorija)">Peržiūrėti</button></td>
                 </tr>
             }
@@ -49,6 +49,6 @@ else
 
     public void GoToKategorijaForm(Kategorija kategorija)
     {
-        navigationManager.NavigateTo($"/KategorijaForm/{kategorija.Pavadinimas}");
+        navigationManager.NavigateTo($"/KategorijaForm/{kategorija.Pav}");
     }
 }

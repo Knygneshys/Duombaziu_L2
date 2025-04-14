@@ -3,6 +3,7 @@
 @using Trikotazo_Parduotuve.Repositories
 @inject SubkategorijaRepository subkategorijaRepository
 @inject KategorijaRepository kategorijaRepository;
+@inject F1Repository f1Repository;
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
@@ -26,16 +27,16 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (Subkategorija subkategorija in subkategorijos)
+            @foreach (F1 f1 in f1Items)
             {
                 <tr>
-                    <td>@subkategorija.Pavadinimas</td>
-                    <td>@subkategorija.Lytis</td>
-                    <td>@subkategorija.Aprasymas</td>
-                    <td>@kategorijosDict[subkategorija.Fk_KATEGORIJA].Pavadinimas</td>
-                    <td>@kategorijosDict[subkategorija.Fk_KATEGORIJA].Aprasymas</td>
-                    <td><button @onclick="()=>DeleteSubkategorija(subkategorija)">Šalinti</button></td>
-                    <td><button @onclick="()=>GoToSubkategorijaForm(subkategorija)">Redaguoti</button></td>
+                    <td>@f1.Pavadinimas</td>
+                    <td>@f1.Lytis</td>
+                    <td>@f1.Aprasymas</td>
+                    <td>@f1.Pav</td>
+                    <td>@f1.Aprasas</td>
+                    <td><button @onclick="()=>DeleteSubkategorija(f1)">Šalinti</button></td>
+                    <td><button @onclick="()=>GoToSubkategorijaForm(f1)">Redaguoti</button></td>
                 </tr>
             }
         </tbody>
@@ -43,26 +44,24 @@ else
 }
 
 @code {
+    private List<F1> f1Items;
     public List<Subkategorija> subkategorijos;
-    private Dictionary<string, Kategorija> kategorijosDict;
 
     protected override async Task OnInitializedAsync()
     {
-        var kategorijos = await kategorijaRepository.GetAllAsync();
-        kategorijosDict = kategorijos.ToDictionary(k => k.Pavadinimas);
-
+        f1Items = await f1Repository.GetAllAsync();
         subkategorijos = await subkategorijaRepository.GetAllAsync();
     }
 
-    public void GoToSubkategorijaForm(Subkategorija subkategorija)
+    public void GoToSubkategorijaForm(F1 subkategorija)
     {
         navigationManager.NavigateTo($"/SubkategorijaForm/{subkategorija.Pavadinimas}/{subkategorija.Lytis}");
     }
 
 
-    public async Task DeleteSubkategorija(Subkategorija subkategorija)
+    public async Task DeleteSubkategorija(F1 subkategorija)
     {
-        await subkategorijaRepository.Remove(subkategorija);
-        subkategorijos.Remove(subkategorija);
+        // await subkategorijaRepository.Remove(subkategorija);
+        // subkategorijos.Remove(subkategorija);
     }
 }
