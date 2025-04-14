@@ -29,7 +29,7 @@ namespace Trikotazo_Parduotuve.Repositories
         public async Task UpdateEntity(Kategorija kategorija)
         {
             await _context.Database.ExecuteSqlRawAsync(
-                "UPDATE kategorija SET Aprasymas = {0} WHERE Pavadinimas = {1}",
+                "UPDATE kategorija SET Aprasas = {0} WHERE Pav = {1}",
                 kategorija.Aprasas, kategorija.Pav);
         }
     }

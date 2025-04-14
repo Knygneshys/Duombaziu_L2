@@ -23,5 +23,10 @@
         {
             throw new NotImplementedException();
         }
+
+        public Task UpdateEntity(Trikotazas entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

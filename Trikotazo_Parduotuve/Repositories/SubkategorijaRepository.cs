@@ -33,5 +33,13 @@ namespace Trikotazo_Parduotuve.Repositories
                 .ExecuteSqlRawAsync("DELETE FROM subkategorija WHERE Pavadinimas = {0} and Lytis = {1}",
                 pavadinimas, lytis);
         }
+
+        public async Task UpdateEntity(string pavadinimas, int lytis, Subkategorija subkategorija)
+        {
+            await _context.Database.ExecuteSqlRawAsync(
+                "UPDATE subkategorija SET  Lytis = {0}, Aprasymas = {1}, Fk_KATEGORIJA = {2} WHERE Pavadinimas = {3} and Lytis = {4}",
+                (int)subkategorija.Lytis, subkategorija.Aprasymas, subkategorija.Fk_KATEGORIJA,
+                pavadinimas, lytis);
+        }
     }
 }

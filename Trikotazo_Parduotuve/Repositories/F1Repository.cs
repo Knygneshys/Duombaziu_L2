@@ -17,5 +17,10 @@
                 .FromSqlRaw("SELECT * FROM subkategorija INNER JOIN kategorija ON subkategorija.Fk_KATEGORIJA = kategorija.Pav")
                 .ToListAsync();
         }
+
+        public Task UpdateEntity(F1 entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

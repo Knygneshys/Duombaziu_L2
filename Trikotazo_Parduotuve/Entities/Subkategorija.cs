@@ -13,5 +13,26 @@ namespace Trikotazo_Parduotuve.Entities
         public Lytis Lytis { get; set; }
         public string? Aprasymas { get; set; }
         public string Fk_KATEGORIJA { get; set; }
+
+        public Subkategorija()
+        {
+            
+        }
+
+        public Subkategorija(Subkategorija subkategorija)
+        {
+            Pavadinimas = subkategorija.Pavadinimas;
+            Lytis = subkategorija.Lytis;
+            Aprasymas = subkategorija.Aprasymas;
+            Fk_KATEGORIJA = subkategorija.Fk_KATEGORIJA;
+        }
+
+        public void Update(Subkategorija subkategorija)
+        {
+            Pavadinimas = subkategorija.Pavadinimas;
+            Lytis = subkategorija.Lytis;
+            Aprasymas = subkategorija.Aprasymas;
+            Fk_KATEGORIJA = subkategorija.Fk_KATEGORIJA;
+        }
     }
 }
