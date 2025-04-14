@@ -3,6 +3,7 @@
 @using Trikotazo_Parduotuve.Repositories
 @inject NavigationManager navigationManager
 @inject SubkategorijaRepository subkategorijaRepository
+@inject KategorijaRepository kategorijaRepository;
 @rendermode InteractiveServer
 <h3>Subkategorija</h3>
 
@@ -39,8 +40,14 @@ else
 
         <div class="form-group">
             <label>
-                Kategorija: <b>@placeHolder.Fk_KATEGORIJA</b>
+                Kategorija:
             </label>
+            <InputSelect @bind-Value="placeHolder.Fk_KATEGORIJA" class="form-control" style="width:100px">
+                @foreach (Kategorija kategorija in kategorijos)
+                {
+                    <option value="@kategorija.Pav">@kategorija.Pav</option>
+                }
+            </InputSelect>
         </div>
 
         <button type="submit">Save</button>
@@ -56,9 +63,11 @@ else
     public Lytis lytis;
     public Subkategorija subkategorija;
     public Subkategorija placeHolder;
+    public List<Kategorija> kategorijos;
 
     protected override async Task OnInitializedAsync()
     {
+        kategorijos = await kategorijaRepository.GetAllAsync();
         Lytis.TryParse(LytisPassed, out lytis);
         subkategorija = await subkategorijaRepository.GetByKey(Pav, lytis);
         placeHolder = new Subkategorija(subkategorija);
