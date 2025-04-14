@@ -114,6 +114,7 @@ else
 
     public async Task UpdateDB()
     {
-        
+        await trikotazasRepository.UpdateEntity(trikotazas.Id, placeHolder);
+        navigationManager.NavigateTo(navigationManager.Uri, true);
     }
 }

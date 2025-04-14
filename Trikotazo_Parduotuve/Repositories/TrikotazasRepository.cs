@@ -35,9 +35,14 @@
                 .FirstOrDefaultAsync();
         }
 
-        public Task UpdateEntity(Trikotazas entity)
+        public async Task UpdateEntity(int id, Trikotazas trikotazas)
         {
-            throw new NotImplementedException();
+            await _context.Database.ExecuteSqlRawAsync(
+                "UPDATE trikotazas SET Pavadinimas = {0}, Kaina = {1}, Medziaga = {2}, Dydis = {3}, Spalva = {4}, Kiekis = {5}, Paskutinis_atnaujinimas = {6}," +
+                " Fk_SUBKATEGORIJA_pav = {7}, Fk_SUBKATEGORIJA_lytis = {8}, Fk_TIEKEJAS = {9} WHERE Id = {10}",
+                trikotazas.Pavadinimas, trikotazas.Kaina, trikotazas.Medziaga, trikotazas.Dydis, trikotazas.Spalva,
+                trikotazas.Kiekis, DateTime.Now, trikotazas.Fk_SUBKATEGORIJA_pav, trikotazas.Fk_SUBKATEGORIJA_lytis,
+                trikotazas.Fk_TIEKEJAS, id);
         }
     }
 }
