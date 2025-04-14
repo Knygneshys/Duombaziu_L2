@@ -26,5 +26,12 @@ namespace Trikotazo_Parduotuve.Repositories
                 pav, (int)lytis)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task Remove(Subkategorija subkategorija)
+        {
+            await _context.Database
+                .ExecuteSqlRawAsync("DELETE FROM subkategorija WHERE Pavadinimas = {0} and Lytis = {1}",
+                subkategorija.Pavadinimas, (int)subkategorija.Lytis);
+        }
     }
 }

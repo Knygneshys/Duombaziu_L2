@@ -21,11 +21,9 @@ namespace Trikotazo_Parduotuve.Repositories
 
         public async Task<Kategorija> GetByKey(string pav)
         {
-            Kategorija kategorija = await _context.Kategorijos
+            return await _context.Kategorijos
                 .FromSqlRaw("SELECT * FROM kategorija WHERE Pavadinimas = {0}", pav)
                 .FirstOrDefaultAsync();
-
-            return kategorija;
         }
 
         public async Task UpdateEntity(Kategorija kategorija)

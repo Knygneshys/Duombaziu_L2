@@ -9,9 +9,9 @@ namespace Trikotazo_Parduotuve.Entities
     {
         [Required(ErrorMessage ="Pavadinimas yra privalomas!")]
         public string Pavadinimas { get; set; }
-        [Required(ErrorMessage = "Pavadinimas yra privaloma!")]
+        [Required(ErrorMessage = "Lytis yra privaloma!")]
         public Lytis Lytis { get; set; }
         public string? Aprasymas { get; set; }
-        public Kategorija Kategorija { get; set; }
+        public string Fk_KATEGORIJA { get; set; }
     }
 }

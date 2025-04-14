@@ -2,6 +2,7 @@
 @using Trikotazo_Parduotuve.Entities
 @using Trikotazo_Parduotuve.Repositories
 @inject SubkategorijaRepository subkategorijaRepository
+@inject KategorijaRepository kategorijaRepository;
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
@@ -21,6 +22,7 @@ else
                 <th scope="col">Lytis</th>
                 <th scope="col">Aprašymas</th>
                 <th scope="col">Kategorija</th>
+                <th scope="col">Kategorijos aprašymas</th>
             </tr>
         </thead>
         <tbody>
@@ -30,8 +32,10 @@ else
                     <td>@subkategorija.Pavadinimas</td>
                     <td>@subkategorija.Lytis</td>
                     <td>@subkategorija.Aprasymas</td>
-                    <td>@subkategorija.Kategorija</td>
-                    <td><button @onclick="()=>GoToSubkategorijaForm(subkategorija)">Peržiūrėti</button></td>
+                    <td>@kategorijosDict[subkategorija.Fk_KATEGORIJA].Pavadinimas</td>
+                    <td>@kategorijosDict[subkategorija.Fk_KATEGORIJA].Aprasymas</td>
+                    <td><button @onclick="()=>DeleteSubkategorija(subkategorija)">Šalinti</button></td>
+                    <td><button @onclick="()=>GoToSubkategorijaForm(subkategorija)">Redaguoti</button></td>
                 </tr>
             }
         </tbody>
@@ -40,20 +44,25 @@ else
 
 @code {
     public List<Subkategorija> subkategorijos;
+    private Dictionary<string, Kategorija> kategorijosDict;
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadSubategorijas();
+        var kategorijos = await kategorijaRepository.GetAllAsync();
+        kategorijosDict = kategorijos.ToDictionary(k => k.Pavadinimas);
 
-    }
-
-    private async Task LoadSubategorijas()
-    {
         subkategorijos = await subkategorijaRepository.GetAllAsync();
     }
 
     public void GoToSubkategorijaForm(Subkategorija subkategorija)
     {
         navigationManager.NavigateTo($"/SubkategorijaForm/{subkategorija.Pavadinimas}/{subkategorija.Lytis}");
+    }
+
+
+    public async Task DeleteSubkategorija(Subkategorija subkategorija)
+    {
+        await subkategorijaRepository.Remove(subkategorija);
+        subkategorijos.Remove(subkategorija);
     }
 }
