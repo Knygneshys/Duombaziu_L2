@@ -4,12 +4,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Trikotazo_Parduotuve.Entities
 {
-    [PrimaryKey(nameof(pavadinimas), nameof(lytis))]
+    [PrimaryKey(nameof(Pavadinimas), nameof(Lytis))]
     public class Subkategorija
     {
-        public string pavadinimas { get; set; }
-        public Lytis lytis { get; set; }
-        public string? aprasymas { get; set; }
-        public Kategorija kategorija { get; set; }
+        [Required(ErrorMessage ="Pavadinimas yra privalomas!")]
+        public string Pavadinimas { get; set; }
+        [Required(ErrorMessage = "Pavadinimas yra privaloma!")]
+        public Lytis Lytis { get; set; }
+        public string? Aprasymas { get; set; }
+        public Kategorija Kategorija { get; set; }
     }
 }

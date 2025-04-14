@@ -1,8 +1,33 @@
-﻿@page "/SubkategorijaForm/{Pav}/{Lytis}"
+﻿@page "/SubkategorijaForm/{Pav}/{LytisPassed}"
 @using Trikotazo_Parduotuve.Entities
-<h3>SubkategorijaForm</h3>
+@using Trikotazo_Parduotuve.Repositories
+@inject NavigationManager navigationManager
+@inject SubkategorijaRepository subkategorijaRepository
+<h3>Subkategorija</h3>
+
+@if(subkategorija is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <p>@subkategorija.Pavadinimas</p>
+    <p>@subkategorija.Lytis</p>
+    <p>@subkategorija.Aprasymas</p>
+}
+
 
 @code {
+    [Parameter]
     public string Pav { get; set; }
-    public Lytis Lytis { get; set; }
+    [Parameter]
+    public string LytisPassed { get; set; }
+    public Lytis lytis;
+    public Subkategorija subkategorija;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Lytis.TryParse(LytisPassed, out lytis);
+        subkategorija = await subkategorijaRepository.GetByKey(Pav, lytis);
+    }
 }

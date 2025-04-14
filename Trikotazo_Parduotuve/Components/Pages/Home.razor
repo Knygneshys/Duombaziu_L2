@@ -12,40 +12,6 @@
 
 Welcome to your new app.
 
-@if (kategorijos is null)
-{
-    <p>Loading...</p>
-}
-else
-{
-    <p>Kategorijos:</p>
-    foreach(Kategorija kategorija in kategorijos)
-    {
-        <h3>@kategorija.Pavadinimas</h3>
-        <p>@kategorija.Aprasymas</p>
-    }
-}
-
-@if(subkategorijos is null)
-{
-    <p>Loading...</p>
-}
-else
-{
-    <p>Subkategorijos:</p>
-    foreach(Subkategorija subkategorija in subkategorijos)
-    {
-        <h3>@subkategorija.pavadinimas</h3>
-        <p>@subkategorija.lytis</p>
-        <p>@subkategorija.aprasymas</p>
-        <p>@subkategorija.kategorija</p>
-    }
-}
-
-@if(visible)
-{
-    <p>VEIKIA</p>
-}
 
 <button @onclick=Work >Spausk</button>
 

@@ -19,9 +19,12 @@ namespace Trikotazo_Parduotuve.Repositories
                 .ToListAsync();
         }
 
-        public Task<Subkategorija> GetByKey()
+        public async Task<Subkategorija> GetByKey(string pav, Lytis lytis)
         {
-            throw new NotImplementedException();
+            return await _context.Subkategorijos
+                .FromSqlRaw("SELECT * FROM subkategorija WHERE Pavadinimas = {0} and Lytis = {1}",
+                pav, (int)lytis)
+                .FirstOrDefaultAsync();
         }
     }
 }

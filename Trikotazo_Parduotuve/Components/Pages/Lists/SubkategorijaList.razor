@@ -1,5 +1,59 @@
-﻿<h3>SubkategorijaList</h3>
+﻿@page "/SubkategorijaList"
+@using Trikotazo_Parduotuve.Entities
+@using Trikotazo_Parduotuve.Repositories
+@inject SubkategorijaRepository subkategorijaRepository
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+<h3>Subkategorijos</h3>
+
+
+@if (subkategorijos is null)
+{
+    <h2>Loading...</h2>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Pavadinimas</th>
+                <th scope="col">Lytis</th>
+                <th scope="col">Aprašymas</th>
+                <th scope="col">Kategorija</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Subkategorija subkategorija in subkategorijos)
+            {
+                <tr>
+                    <td>@subkategorija.Pavadinimas</td>
+                    <td>@subkategorija.Lytis</td>
+                    <td>@subkategorija.Aprasymas</td>
+                    <td>@subkategorija.Kategorija</td>
+                    <td><button @onclick="()=>GoToSubkategorijaForm(subkategorija)">Peržiūrėti</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
+    public List<Subkategorija> subkategorijos;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSubategorijas();
+
+    }
+
+    private async Task LoadSubategorijas()
+    {
+        subkategorijos = await subkategorijaRepository.GetAllAsync();
+    }
+
+    public void GoToSubkategorijaForm(Subkategorija subkategorija)
+    {
+        navigationManager.NavigateTo($"/SubkategorijaForm/{subkategorija.Pavadinimas}/{subkategorija.Lytis}");
+    }
 }
