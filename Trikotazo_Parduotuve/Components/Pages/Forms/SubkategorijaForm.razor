@@ -122,8 +122,9 @@ else
         navigationManager.NavigateTo($"/TrikotazasForm/{trikotazas.Id}");
     }
 
-    public void DeleteTrikotazas(Trikotazas trikotazas)
+    public async Task DeleteTrikotazas(Trikotazas trikotazas)
     {
-        
+        await trikotazasRepository.Remove(trikotazas.Id);
+        navigationManager.NavigateTo(navigationManager.Uri, true);
     }
 }

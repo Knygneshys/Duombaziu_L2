@@ -44,5 +44,11 @@
                 trikotazas.Kiekis, DateTime.Now, trikotazas.Fk_SUBKATEGORIJA_pav, trikotazas.Fk_SUBKATEGORIJA_lytis,
                 trikotazas.Fk_TIEKEJAS, id);
         }
+
+        public async Task Remove(int id)
+        {
+            await _context.Database.ExecuteSqlRawAsync("DELETE FROM trikotazas WHERE Id = {0}",
+                id);
+        }
     }
 }
