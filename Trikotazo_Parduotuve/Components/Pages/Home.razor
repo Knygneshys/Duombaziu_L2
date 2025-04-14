@@ -1,9 +1,9 @@
 ﻿@page "/"
 @using Trikotazo_Parduotuve.Entities
 @using Trikotazo_Parduotuve.Repositories
-@inject IRepository<Kategorija> kategorijaRepository;
-@inject IRepository<Subkategorija> subkategorijaRepository;
-@inject IRepository<Trikotazas> trikotazasRepository;
+@inject KategorijaRepository kategorijaRepository;
+@inject SubkategorijaRepository subkategorijaRepository;
+@inject TrikotazasRepository trikotazasRepository;
 @rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>

@@ -1,12 +1,49 @@
 ﻿@using Trikotazo_Parduotuve.Entities
 @using Trikotazo_Parduotuve.Repositories
-@page "/KategorijaForm/{Kategorija}"
+@inject KategorijaRepository kategorijaRepository;
+@page "/KategorijaForm/{KatPav}"
+@rendermode InteractiveServer
 
 <h3>Kategorijos forma</h3>
 
+@if(kategorija is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <EditForm Model="placeHolder" OnSubmit="UpdateDB" FormName="KategorijaForm">
+        <DataAnnotationsValidator/>
+        <div class="form-group">
+            <label>
+                Pavadinimas:
+                <InputText @bind-Value="placeHolder.Pavadinimas" />
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                Aprašymas:
+                <InputTextArea @bind-Value="placeHolder.Aprasymas" class="form-control" rows="4" style="width:500px"/>
+            </label>
+        </div>
+
+        <button @onclick="UpdateDB">Save</button>
+    </EditForm>
+}
 @code {
     [Parameter]
-    public string Kategorija { get; set; }
+    public string KatPav { get; set; }
+    public Kategorija kategorija;
+    public Kategorija placeHolder;
 
+    protected override async Task OnInitializedAsync()
+    {
+        kategorija = await kategorijaRepository.GetByKey(KatPav);
+        placeHolder = new Kategorija(kategorija);
+    }
 
+    public void UpdateDB()
+    {
+        Console.WriteLine(kategorija.Pavadinimas);
+    }
 }

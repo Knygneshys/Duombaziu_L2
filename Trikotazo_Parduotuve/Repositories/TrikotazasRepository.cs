@@ -18,5 +18,10 @@
                  .FromSqlRaw("SELECT * FROM trikotazas")
                  .ToListAsync();
         }
+
+        public Task<Trikotazas> GetByKey()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

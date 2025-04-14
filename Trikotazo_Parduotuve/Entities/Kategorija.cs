@@ -7,7 +7,19 @@ namespace Trikotazo_Parduotuve.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Required(ErrorMessage ="Kategorijos pavadinimas yra būtinas!")]
         public string Pavadinimas { get; set; }
         public string? Aprasymas { get; set; }
+
+        public Kategorija(Kategorija kategorija)
+        {
+            Pavadinimas = kategorija.Pavadinimas;
+            Aprasymas = kategorija.Aprasymas;
+        }
+
+        public Kategorija()
+        {
+            
+        }
     }
 }

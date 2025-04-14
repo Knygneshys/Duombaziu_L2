@@ -18,5 +18,10 @@ namespace Trikotazo_Parduotuve.Repositories
                 .FromSqlRaw("SELECT * FROM subkategorija")
                 .ToListAsync();
         }
+
+        public Task<Subkategorija> GetByKey()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

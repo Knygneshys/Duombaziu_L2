@@ -16,9 +16,9 @@ builder.Services.AddDbContext<StoreDataContext>(options =>
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
 
 
-builder.Services.AddScoped<IRepository<Kategorija>, KategorijaRepository>();
-builder.Services.AddScoped<IRepository<Subkategorija>, SubkategorijaRepository>();
-builder.Services.AddScoped<IRepository<Trikotazas>, TrikotazasRepository>();
+builder.Services.AddScoped<KategorijaRepository>();
+builder.Services.AddScoped<SubkategorijaRepository>();
+builder.Services.AddScoped<TrikotazasRepository>();
 
 var app = builder.Build();
 
