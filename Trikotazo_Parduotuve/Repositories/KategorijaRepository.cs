@@ -27,5 +27,12 @@ namespace Trikotazo_Parduotuve.Repositories
 
             return kategorija;
         }
+
+        public async Task UpdateEntity(Kategorija kategorija)
+        {
+            await _context.Database.ExecuteSqlRawAsync(
+                "UPDATE kategorija SET Aprasymas = {0} WHERE Pavadinimas = {1}",
+                kategorija.Aprasymas, kategorija.Pavadinimas);
+        }
     }
 }

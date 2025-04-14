@@ -10,6 +10,10 @@ namespace Trikotazo_Parduotuve.Entities
         [Required(ErrorMessage ="Kategorijos pavadinimas yra būtinas!")]
         public string Pavadinimas { get; set; }
         public string? Aprasymas { get; set; }
+        public Kategorija()
+        {
+
+        }
 
         public Kategorija(Kategorija kategorija)
         {
@@ -17,9 +21,10 @@ namespace Trikotazo_Parduotuve.Entities
             Aprasymas = kategorija.Aprasymas;
         }
 
-        public Kategorija()
+        public void Update(Kategorija kategorija)
         {
-            
+            Aprasymas = kategorija.Aprasymas;
         }
+
     }
 }

@@ -43,6 +43,7 @@ else
 
     public void UpdateDB()
     {
-        Console.WriteLine(kategorija.Pavadinimas);
+        kategorija.Update(placeHolder);
+        kategorijaRepository.UpdateEntity(kategorija);
     }
 }
