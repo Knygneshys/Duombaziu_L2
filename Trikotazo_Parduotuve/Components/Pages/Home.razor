@@ -4,14 +4,23 @@
 @inject KategorijaRepository kategorijaRepository;
 @inject SubkategorijaRepository subkategorijaRepository;
 @inject TrikotazasRepository trikotazasRepository;
+@inject TiekejasRepository tiekejasRepository;
 @rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
+@if(tiekejai is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    foreach(Tiekejas tiekeas in tiekejai)
+    {
+        <p>@tiekeas.Pavadinimas</p>
+        <p>@tiekeas.Kontaktinis_asmuo</p>
+    }
+}
 
 <button @onclick=Work >Spausk</button>
 
@@ -19,13 +28,15 @@ Welcome to your new app.
     private List<Kategorija> kategorijos;
     private List<Subkategorija> subkategorijos;
     private List<Trikotazas> trikotazai;
+    private List<Tiekejas> tiekejai;
     public bool visible = false;
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadKategorijas();
-        await LoadSubkategorijas();
-        await LoadTrikotazus();
+        await LoadTiekejus();
+        // await LoadKategorijas();
+        // await LoadSubkategorijas();
+        // await LoadTrikotazus();
     }
 
     private async Task LoadKategorijas()
@@ -41,6 +52,11 @@ Welcome to your new app.
     private async Task LoadTrikotazus()
     {
         trikotazai = await trikotazasRepository.GetAllAsync();
+    }
+
+    private async Task LoadTiekejus()
+    {
+        tiekejai = await tiekejasRepository.GetAllAsync();
     }
 
     public void Work()

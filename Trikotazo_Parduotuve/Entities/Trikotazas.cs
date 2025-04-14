@@ -6,7 +6,7 @@ namespace Trikotazo_Parduotuve.Entities
     {
         [Key]
         public int Id { get; set; }
-        public string  Pavadinimas { get; set; }
+        public string Pavadinimas { get; set; }
         public float Kaina { get; set; }
         public string Medziaga { get; set; }
         public string Dydis { get; set; }

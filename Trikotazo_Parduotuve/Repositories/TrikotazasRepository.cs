@@ -19,6 +19,14 @@
                  .ToListAsync();
         }
 
+        public async Task<List<Trikotazas>> GetFilteredBySubkategorija(string pavadinimas, int lytis)
+        {
+            return await _context.Trikotazai
+                .FromSqlRaw("SELECT * FROM trikotazas WHERE Fk_SUBKATEGORIJA_pav = {0} AND Fk_SUBKATEGORIJA_lytis = {1}",
+                pavadinimas, lytis)
+                .ToListAsync();
+        }
+
         public Task<Trikotazas> GetByKey()
         {
             throw new NotImplementedException();

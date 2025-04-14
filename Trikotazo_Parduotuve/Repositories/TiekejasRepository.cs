@@ -18,10 +18,5 @@
                 .FromSqlRaw("SELECT * FROM tiekejas")
                 .ToListAsync();
         }
-
-        public Task UpdateEntity(Tiekejas entity)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

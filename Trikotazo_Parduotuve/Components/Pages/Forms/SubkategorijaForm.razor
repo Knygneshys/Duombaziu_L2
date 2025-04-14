@@ -4,6 +4,7 @@
 @inject NavigationManager navigationManager
 @inject SubkategorijaRepository subkategorijaRepository
 @inject KategorijaRepository kategorijaRepository;
+@inject TrikotazasRepository trikotazasRepository;
 @rendermode InteractiveServer
 <h3>Subkategorija</h3>
 
@@ -49,12 +50,48 @@ else
                 }
             </InputSelect>
         </div>
-
+        <br/>
         <button type="submit">Save</button>
     </EditForm>
 }
-
-
+<br />
+@if(trikotazai != null)
+{
+    <table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Pavadinimas</th>
+            <th scope="col">Kaina</th>
+            <th scope="col">Medžiaga</th>
+            <th scope="col">Dydis</th>
+            <th scope="col">Spalva</th>
+            <th scope="col">Kiekis</th>
+            <th scope="col">Paskutinis atnaujinimas</th>
+            <th scope="col">Subkategorija</th>
+            <th scope="col">Lytis</th>
+            <th scope="col">Tiekejas</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(Trikotazas trikotazas in trikotazai)
+        {
+            <tr>
+                <td>@trikotazas.Pavadinimas</td>
+                <td>@trikotazas.Kaina</td>
+                <td>@trikotazas.Medziaga</td>
+                <td>@trikotazas.Dydis</td>
+                <td>@trikotazas.Spalva</td>
+                <td>@trikotazas.Kiekis</td>
+                <td>@trikotazas.Paskutinis_atnaujinimas.ToShortDateString()</td>
+                <td>@trikotazas.Fk_SUBKATEGORIJA_pav</td>
+                <td>@trikotazas.Fk_SUBKATEGORIJA_lytis</td>
+                <td>@trikotazas.Fk_TIEKEJAS</td>
+                <td><button @onclick="()=>GoToTrikotazasForm(trikotazas)">Peržiūrėti</button></td>
+            </tr>
+        }
+    </tbody>
+    </table>
+}
 @code {
     [Parameter]
     public string Pav { get; set; }
@@ -64,6 +101,7 @@ else
     public Subkategorija subkategorija;
     public Subkategorija placeHolder;
     public List<Kategorija> kategorijos;
+    public List<Trikotazas> trikotazai;
 
     protected override async Task OnInitializedAsync()
     {
@@ -71,6 +109,7 @@ else
         Lytis.TryParse(LytisPassed, out lytis);
         subkategorija = await subkategorijaRepository.GetByKey(Pav, lytis);
         placeHolder = new Subkategorija(subkategorija);
+        trikotazai = await trikotazasRepository.GetFilteredBySubkategorija(subkategorija.Pavadinimas, (int)subkategorija.Lytis);
     }
 
     public async Task UpdateDB()
@@ -79,5 +118,10 @@ else
         subkategorija = await subkategorijaRepository.GetByKey(placeHolder.Pavadinimas, placeHolder.Lytis);
         placeHolder = new Subkategorija(subkategorija);
         navigationManager.NavigateTo($"/SubkategorijaForm/{placeHolder.Pavadinimas}/{placeHolder.Lytis}", forceLoad: true);
+    }
+
+    public void GoToTrikotazasForm(Trikotazas trikotazas)
+    {
+        
     }
 }
