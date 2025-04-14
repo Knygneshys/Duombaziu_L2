@@ -119,7 +119,7 @@ else
 
     public void GoToTrikotazasForm(Trikotazas trikotazas)
     {
-
+        navigationManager.NavigateTo($"/TrikotazasForm/{trikotazas.Id}");
     }
 
     public void DeleteTrikotazas(Trikotazas trikotazas)

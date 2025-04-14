@@ -17,5 +17,24 @@ namespace Trikotazo_Parduotuve.Entities
         public int Fk_SUBKATEGORIJA_lytis { get; set; }
         public int Fk_TIEKEJAS { get; set; }
 
+        public Trikotazas()
+        {
+            
+        }
+
+        public Trikotazas(Trikotazas trikotazas)
+        {
+            Id = trikotazas.Id;
+            Pavadinimas = trikotazas.Pavadinimas;
+            Kaina = trikotazas.Kaina;
+            Medziaga = trikotazas.Medziaga;
+            Dydis = trikotazas.Dydis;
+            Spalva = trikotazas.Spalva;
+            Kiekis = trikotazas.Kiekis;
+            Paskutinis_atnaujinimas = trikotazas.Paskutinis_atnaujinimas;
+            Fk_SUBKATEGORIJA_pav = trikotazas.Fk_SUBKATEGORIJA_pav;
+            Fk_SUBKATEGORIJA_lytis = trikotazas.Fk_SUBKATEGORIJA_lytis;
+            Fk_TIEKEJAS = trikotazas.Fk_TIEKEJAS;
+        }
     }
 }

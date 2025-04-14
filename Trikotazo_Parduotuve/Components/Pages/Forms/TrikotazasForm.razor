@@ -1,0 +1,119 @@
+﻿@page "/TrikotazasForm/{Id:int}"
+@using Trikotazo_Parduotuve.Entities
+@using Trikotazo_Parduotuve.Repositories
+@inject NavigationManager navigationManager
+@inject TrikotazasRepository trikotazasRepository;
+@inject TiekejasRepository tiekejasRepository;
+@rendermode InteractiveServer
+
+<h3>Trikotazas</h3>
+
+@if(trikotazas is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <EditForm Model="placeHolder" OnSubmit="UpdateDB" FormName="TrikotazasForm">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <label>
+                Id: <b>@placeHolder.Id</b>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>
+                Pavadinimas: <b>@placeHolder.Pavadinimas</b>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>
+                Kaina:
+            </label>
+            <InputNumber class="form-control" @bind-Value="placeHolder.Kaina" style="width:150px" />
+        </div>
+
+        <div class="form-group">
+            <label>
+                Medziaga:
+            </label>
+            <InputText class="form-control" @bind-Value="placeHolder.Medziaga" />
+        </div>
+
+        <div class="form-group">
+            <label>
+                Dydis:
+            </label>
+            <InputText class="form-control" @bind-Value="placeHolder.Dydis" />
+        </div>
+
+        <div class="form-group">
+            <label>
+                Spalva:
+            </label>
+            <InputText class="form-control" @bind-Value="placeHolder.Spalva" />
+        </div>
+
+        <div class="form-group">
+            <label>
+                Kiekis:
+            </label>
+            <InputNumber class="form-control" @bind-Value="placeHolder.Kiekis" />
+        </div>
+
+        <div class="form-group">
+            <label>
+                Paskutinio atnaujinimo data:
+            </label>
+            <InputDate class="form-control" @bind-Value="placeHolder.Paskutinis_atnaujinimas" style="width:150px" />
+        </div>
+        <br/>
+        <div class="form-group">
+            <label>
+                Subkategorija: <b>@placeHolder.Fk_SUBKATEGORIJA_pav</b>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>
+                Subkategorija: <b>@placeHolder.Fk_SUBKATEGORIJA_lytis</b>
+            </label>
+        </div>
+        <br/>
+        <div class="form-group">
+            <label>
+                Tiekejas:
+            </label>
+            <InputSelect @bind-Value="placeHolder.Fk_TIEKEJAS" class="form-control" style="width:200px">
+                @foreach (Tiekejas tiekejas in tiekejai)
+                {
+                    <option value="@tiekejas.Id">@tiekejas.Pavadinimas</option>
+                }
+            </InputSelect>
+        </div>
+        <br/>
+        <button type="submit">Save</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    public Trikotazas trikotazas;
+    public Trikotazas placeHolder;
+    public List<Tiekejas> tiekejai;
+
+    protected override async Task OnInitializedAsync()
+    {
+        trikotazas = await trikotazasRepository.GetByKey(Id);
+        placeHolder = new Trikotazas(trikotazas);
+        tiekejai = await tiekejasRepository.GetAllAsync();
+    }
+
+    public async Task UpdateDB()
+    {
+        
+    }
+}

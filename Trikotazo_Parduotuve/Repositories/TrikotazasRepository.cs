@@ -27,9 +27,12 @@
                 .ToListAsync();
         }
 
-        public Task<Trikotazas> GetByKey()
+        public async Task<Trikotazas> GetByKey(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Trikotazai
+                .FromSqlRaw("SELECT * FROM trikotazas WHERE Id = {0}",
+                id)
+                .FirstOrDefaultAsync();
         }
 
         public Task UpdateEntity(Trikotazas entity)
