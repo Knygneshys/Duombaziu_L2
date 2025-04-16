@@ -42,6 +42,8 @@ else
         </tbody>
     </table>
 }
+<br/>
+<button @onclick="() => GoToSubkategorijaForm(null)">Pridėti naują subkategoriją</button>
 
 @if (deletionWarningIsVisible)
 {
@@ -59,7 +61,14 @@ else
 
     public void GoToSubkategorijaForm(F1 joinedTables)
     {
-        navigationManager.NavigateTo($"/SubkategorijaForm/{joinedTables.Pavadinimas}/{joinedTables.Lytis}");
+        if (joinedTables is null)
+        {
+            navigationManager.NavigateTo($"/SubkategorijaForm/nauja/nauja");
+        } 
+        else
+        {
+            navigationManager.NavigateTo($"/SubkategorijaForm/{joinedTables.Pavadinimas}/{joinedTables.Lytis}");
+        }
     }
 
 

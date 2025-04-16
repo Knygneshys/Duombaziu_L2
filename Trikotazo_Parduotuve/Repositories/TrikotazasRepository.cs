@@ -1,6 +1,7 @@
 ﻿namespace Trikotazo_Parduotuve.Repositories
 {
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Migrations.Operations;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Trikotazo_Parduotuve.Entities;
@@ -49,6 +50,15 @@
         {
             await _context.Database.ExecuteSqlRawAsync("DELETE FROM trikotazas WHERE Id = {0}",
                 id);
+        }
+
+        public async Task Add(Trikotazas trikotazas)
+        {
+            await _context.Database.ExecuteSqlRawAsync(
+                "INSERT INTO trikotazas (Pavadinimas, Kaina, Medziaga, Dydis, Spalva, Kiekis, Paskutinis_atnaujinimas, Fk_SUBKATEGORIJA_pav, Fk_SUBKATEGORIJA_lytis, Fk_TIEKEJAS)" +
+                "VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9})",
+                trikotazas.Pavadinimas, trikotazas.Kaina, trikotazas.Medziaga, trikotazas.Dydis, trikotazas.Spalva, trikotazas.Kiekis, trikotazas.Paskutinis_atnaujinimas,
+                trikotazas.Fk_SUBKATEGORIJA_pav, trikotazas.Fk_SUBKATEGORIJA_lytis, trikotazas.Fk_TIEKEJAS);
         }
     }
 }

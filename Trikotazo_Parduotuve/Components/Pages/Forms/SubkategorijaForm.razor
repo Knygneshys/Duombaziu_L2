@@ -5,6 +5,7 @@
 @inject SubkategorijaRepository subkategorijaRepository
 @inject KategorijaRepository kategorijaRepository;
 @inject TrikotazasRepository trikotazasRepository;
+@inject TiekejasRepository tiekejasRepository;
 @rendermode InteractiveServer
 <h3>Subkategorija</h3>
 
@@ -97,7 +98,7 @@ else
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add New Chroma</h5>
+                    <h5 class="modal-title">Add New Trikotazas</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="()=> trikotazasAdditionPopupIsOpen = false"></button>
                 </div>
                 <EditForm Model="@this" OnValidSubmit="AddTrikotazas">
@@ -106,39 +107,46 @@ else
                         <table>
                             <tr>
                                 <td>Pavadinimas<span style="color:red">*</span> </td>
-                                <td><input type="text" placeholder="Trikotazo pavadinimas..." @bind="trikotazasPlaceHolder.Pavadinimas" /></td>
+                                <td><input type="text" placeholder="Trikotazo pavadinimas..." @bind="trikotazasPlaceHolder.Pavadinimas" class="form-control" /></td>
                             </tr>
                             <tr>
                                 <td>Kaina<span style="color:red">*</span> </td>
-                                <td><input type="number" placeholder="Trikotazo kaina..." @bind="trikotazasPlaceHolder.Kaina" /></td>
+                                <td><input type="number" placeholder="Trikotazo kaina..." @bind="trikotazasPlaceHolder.Kaina" class="form-control" /></td>
                             </tr>
                             <tr>
                                 <td>Medziaga<span style="color:red">*</span> </td>
-                                <td><input type="text" placeholder="Trikotazo medžiaga..." @bind="trikotazasPlaceHolder.Medziaga" /></td>
+                                <td><input type="text" placeholder="Trikotazo medžiaga..." @bind="trikotazasPlaceHolder.Medziaga" class="form-control" /></td>
                             </tr>
                             <tr>
                                 <td>Dydis<span style="color:red">*</span> </td>
-                                <td><input type="text" placeholder="Trikotazo dydis..." @bind="trikotazasPlaceHolder.Dydis" /></td>
+                                <td><input type="text" placeholder="Trikotazo dydis..." @bind="trikotazasPlaceHolder.Dydis" class="form-control" /></td>
                             </tr>
                             <tr>
                                 <td>Spalva<span style="color:red">*</span> </td>
-                                <td><input type="text" placeholder="Trikotazo spalva..." @bind="trikotazasPlaceHolder.Spalva" /></td>
+                                <td><input type="text" placeholder="Trikotazo spalva..." @bind="trikotazasPlaceHolder.Spalva" class="form-control" /></td>
                             </tr>
                             <tr>
                                 <td>Kiekis<span style="color:red">*</span> </td>
-                                <td><input type="number" placeholder="Trikotazo kiekis..." @bind="trikotazasPlaceHolder.Kiekis" /></td>
+                                <td><input type="number" placeholder="Trikotazo kiekis..." @bind="trikotazasPlaceHolder.Kiekis" class="form-control" /></td>
                             </tr>
                             <tr>
                                 <td>Subkategorija<span style="color:red">*</span> </td>
-                                <td><input type="text" placeholder="Trikotazo subkategorija..." @bind="trikotazasPlaceHolder.Fk_SUBKATEGORIJA_pav" /></td>
+                                <td class="form-control"><b>@subkategorija.Pavadinimas</b></td>
                             </tr>
                             <tr>
                                 <td>Lytis<span style="color:red">*</span> </td>
-                                <td><input type="number" placeholder="Trikotazo lytis..." @bind="trikotazasPlaceHolder.Fk_SUBKATEGORIJA_lytis" /></td>
+                                <td class="form-control"><b>@((Lytis)subkategorija.Lytis)</b></td>
                             </tr>
                             <tr>
                                 <td>Tiekejas<span style="color:red">*</span> </td>
-                                <td><input type="number" placeholder="Trikotazo tiekejas..." @bind="trikotazasPlaceHolder.Fk_TIEKEJAS" /></td>
+                                <td>
+                                    <InputSelect @bind-Value="trikotazasPlaceHolder.Fk_TIEKEJAS" class="form-control">
+                                        @foreach (Tiekejas tiekejas in tiekejai)
+                                        {
+                                            <option value="@tiekejas.Id">@tiekejas.Pavadinimas</option>
+                                        }
+                                    </InputSelect>
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -162,6 +170,7 @@ else
     public Subkategorija placeHolder;
     public List<Kategorija> kategorijos;
     public List<Trikotazas> trikotazai;
+    public List<Tiekejas> tiekejai;
     public bool trikotazasAdditionPopupIsOpen = false;
     public Trikotazas trikotazasPlaceHolder = new Trikotazas();
 
@@ -172,6 +181,7 @@ else
         subkategorija = await subkategorijaRepository.GetByKey(Pav, lytis);
         placeHolder = new Subkategorija(subkategorija);
         trikotazai = await trikotazasRepository.GetFilteredBySubkategorija(subkategorija.Pavadinimas, (int)subkategorija.Lytis);
+        tiekejai = await tiekejasRepository.GetAllAsync();
     }
 
     public async Task UpdateDB()
@@ -195,8 +205,14 @@ else
         navigationManager.NavigateTo(navigationManager.Uri, true);
     }
 
-    public void AddTrikotazas()
+    public async Task AddTrikotazas()
     {
-        
+        trikotazasPlaceHolder.Fk_SUBKATEGORIJA_pav = subkategorija.Pavadinimas;
+        trikotazasPlaceHolder.Fk_SUBKATEGORIJA_lytis = (int)subkategorija.Lytis;
+        trikotazasPlaceHolder.Paskutinis_atnaujinimas = DateTime.Today;
+        Trikotazas trikotazas = new Trikotazas(trikotazasPlaceHolder);
+
+        await trikotazasRepository.Add(trikotazas);
+        navigationManager.NavigateTo(navigationManager.Uri, true);
     }
 }
