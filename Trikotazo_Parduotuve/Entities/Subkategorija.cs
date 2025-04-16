@@ -16,7 +16,6 @@ namespace Trikotazo_Parduotuve.Entities
 
         public Subkategorija()
         {
-            
         }
 
         public Subkategorija(Subkategorija subkategorija)

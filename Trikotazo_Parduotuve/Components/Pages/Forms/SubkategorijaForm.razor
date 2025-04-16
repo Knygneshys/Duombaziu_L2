@@ -9,18 +9,24 @@
 @rendermode InteractiveServer
 <h3>Subkategorija</h3>
 
-@if(subkategorija is null)
-{
-    <p>Loading...</p>
-}
-else
+@if(placeHolder != null)
 {
     <EditForm Model="placeHolder" OnValidSubmit="UpdateDB" FormName="SubkategorijaForm">
         <DataAnnotationsValidator />
         <div class="form-group">
-            <label>
-                Pavadinimas: <b>@placeHolder.Pavadinimas</b>
-            </label>
+            @if (LytisPassed.Equals("nauja"))
+            {
+                <label>
+                    Pavadinimas:
+                </label>
+                <InputText @bind-Value="placeHolder.Pavadinimas" class="form-control" rows="4" style="width:500px" />
+            }
+            else
+            {
+                <label>
+                    Pavadinimas: <b>@placeHolder.Pavadinimas</b>
+                </label>
+            }
         </div>
 
         <div class="form-group">
@@ -101,7 +107,7 @@ else
                     <h5 class="modal-title">Add New Trikotazas</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="()=> trikotazasAdditionPopupIsOpen = false"></button>
                 </div>
-                <EditForm Model="@this" OnValidSubmit="AddTrikotazas">
+                <EditForm Model="trikotazasPlaceHolder" OnValidSubmit="AddTrikotazas">
                     <DataAnnotationsValidator />
                     <div class="modal-body">
                         <table>
@@ -177,10 +183,17 @@ else
     protected override async Task OnInitializedAsync()
     {
         kategorijos = await kategorijaRepository.GetAllAsync();
-        Lytis.TryParse(LytisPassed, out lytis);
-        subkategorija = await subkategorijaRepository.GetByKey(Pav, lytis);
-        placeHolder = new Subkategorija(subkategorija);
-        trikotazai = await trikotazasRepository.GetFilteredBySubkategorija(subkategorija.Pavadinimas, (int)subkategorija.Lytis);
+        if (LytisPassed.Equals("nauja"))
+        {
+            placeHolder = new Subkategorija();
+        }
+        else
+        {
+            Lytis.TryParse(LytisPassed, out lytis);
+            subkategorija = await subkategorijaRepository.GetByKey(Pav, lytis);
+            placeHolder = new Subkategorija(subkategorija);
+            trikotazai = await trikotazasRepository.GetFilteredBySubkategorija(subkategorija.Pavadinimas, (int)subkategorija.Lytis);
+        }
         tiekejai = await tiekejasRepository.GetAllAsync();
     }
 
