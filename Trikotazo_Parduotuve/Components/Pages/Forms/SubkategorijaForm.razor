@@ -78,7 +78,7 @@ else
                     <td>@trikotazas.Kiekis</td>
                     <td>@trikotazas.Paskutinis_atnaujinimas.ToShortDateString()</td>
                     <td>@trikotazas.Fk_SUBKATEGORIJA_pav</td>
-                    <td>@trikotazas.Fk_SUBKATEGORIJA_lytis</td>
+                    <td>@((Lytis)trikotazas.Fk_SUBKATEGORIJA_lytis)</td>
                     <td>@trikotazas.Fk_TIEKEJAS</td>
                     <td><button @onclick="()=>GoToTrikotazasForm(trikotazas)">Peržiūrėti</button></td>
                     <td><button @onclick="()=>DeleteTrikotazas(trikotazas)">Ištrinti</button></td>
@@ -87,6 +87,71 @@ else
         </tbody>
     </table>
 }
+
+<br />
+<button @onclick="() => trikotazasAdditionPopupIsOpen = true">Add trikotažas</button>
+
+@if (trikotazasAdditionPopupIsOpen)
+{
+    <div class="modal" tabindex="-1" role="dialog" style="display:block">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Chroma</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="()=> trikotazasAdditionPopupIsOpen = false"></button>
+                </div>
+                <EditForm Model="@this" OnValidSubmit="AddTrikotazas">
+                    <DataAnnotationsValidator />
+                    <div class="modal-body">
+                        <table>
+                            <tr>
+                                <td>Pavadinimas<span style="color:red">*</span> </td>
+                                <td><input type="text" placeholder="Trikotazo pavadinimas..." @bind="trikotazasPlaceHolder.Pavadinimas" /></td>
+                            </tr>
+                            <tr>
+                                <td>Kaina<span style="color:red">*</span> </td>
+                                <td><input type="number" placeholder="Trikotazo kaina..." @bind="trikotazasPlaceHolder.Kaina" /></td>
+                            </tr>
+                            <tr>
+                                <td>Medziaga<span style="color:red">*</span> </td>
+                                <td><input type="text" placeholder="Trikotazo medžiaga..." @bind="trikotazasPlaceHolder.Medziaga" /></td>
+                            </tr>
+                            <tr>
+                                <td>Dydis<span style="color:red">*</span> </td>
+                                <td><input type="text" placeholder="Trikotazo dydis..." @bind="trikotazasPlaceHolder.Dydis" /></td>
+                            </tr>
+                            <tr>
+                                <td>Spalva<span style="color:red">*</span> </td>
+                                <td><input type="text" placeholder="Trikotazo spalva..." @bind="trikotazasPlaceHolder.Spalva" /></td>
+                            </tr>
+                            <tr>
+                                <td>Kiekis<span style="color:red">*</span> </td>
+                                <td><input type="number" placeholder="Trikotazo kiekis..." @bind="trikotazasPlaceHolder.Kiekis" /></td>
+                            </tr>
+                            <tr>
+                                <td>Subkategorija<span style="color:red">*</span> </td>
+                                <td><input type="text" placeholder="Trikotazo subkategorija..." @bind="trikotazasPlaceHolder.Fk_SUBKATEGORIJA_pav" /></td>
+                            </tr>
+                            <tr>
+                                <td>Lytis<span style="color:red">*</span> </td>
+                                <td><input type="number" placeholder="Trikotazo lytis..." @bind="trikotazasPlaceHolder.Fk_SUBKATEGORIJA_lytis" /></td>
+                            </tr>
+                            <tr>
+                                <td>Tiekejas<span style="color:red">*</span> </td>
+                                <td><input type="number" placeholder="Trikotazo tiekejas..." @bind="trikotazasPlaceHolder.Fk_TIEKEJAS" /></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @onclick="()=> trikotazasAdditionPopupIsOpen = false">Close</button>
+                        <button type="submit" class="btn btn-primary">Add trikotazas</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+}
+
 @code {
     [Parameter]
     public string Pav { get; set; }
@@ -97,6 +162,8 @@ else
     public Subkategorija placeHolder;
     public List<Kategorija> kategorijos;
     public List<Trikotazas> trikotazai;
+    public bool trikotazasAdditionPopupIsOpen = false;
+    public Trikotazas trikotazasPlaceHolder = new Trikotazas();
 
     protected override async Task OnInitializedAsync()
     {
@@ -126,5 +193,10 @@ else
     {
         await trikotazasRepository.Remove(trikotazas.Id);
         navigationManager.NavigateTo(navigationManager.Uri, true);
+    }
+
+    public void AddTrikotazas()
+    {
+        
     }
 }
