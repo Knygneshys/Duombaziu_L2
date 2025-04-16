@@ -12,6 +12,7 @@ namespace Trikotazo_Parduotuve.Entities
         [Required(ErrorMessage = "Lytis yra privaloma!")]
         public Lytis Lytis { get; set; }
         public string? Aprasymas { get; set; }
+        [Required(ErrorMessage = "Kategorija yra privaloma!")]
         public string Fk_KATEGORIJA { get; set; }
 
         public Subkategorija()

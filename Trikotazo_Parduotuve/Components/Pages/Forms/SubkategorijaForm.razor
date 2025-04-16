@@ -20,6 +20,7 @@
                     Pavadinimas:
                 </label>
                 <InputText @bind-Value="placeHolder.Pavadinimas" class="form-control" rows="4" style="width:500px" />
+                <ValidationMessage For="@(() => placeHolder.Pavadinimas)" />
             }
             else
             {
@@ -30,9 +31,22 @@
         </div>
 
         <div class="form-group">
-            <label>Lytis: <b>@placeHolder.Lytis</b></label>
+            @if (LytisPassed.Equals("nauja"))
+            {
+                <label>Lytis:</label>
+                <InputSelect @bind-Value="placeHolder.Lytis" class="form-control" style="width:200px">
+                    @foreach (Lytis lytis in Enum.GetValues(typeof(Lytis)))
+                    {
+                        <option value="@lytis">@lytis</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => placeHolder.Lytis)" />
+            }
+            else
+            {
+                <label>Lytis: <b>@placeHolder.Lytis</b></label>
+            }
         </div>
-
         <div class="form-group">
             <label>
                 Aprašymas:
@@ -50,6 +64,7 @@
                     <option value="@kategorija.Pav">@kategorija.Pav</option>
                 }
             </InputSelect>
+            <ValidationMessage For="@(() => placeHolder.Fk_KATEGORIJA)" />
         </div>
         <br/>
         <button type="submit">Save</button>
@@ -113,27 +128,33 @@
                         <table>
                             <tr>
                                 <td>Pavadinimas<span style="color:red">*</span> </td>
-                                <td><input type="text" placeholder="Trikotazo pavadinimas..." @bind="trikotazasPlaceHolder.Pavadinimas" class="form-control" /></td>
+                                <td><InputText placeholder="Trikotazo pavadinimas..." @bind-value="trikotazasPlaceHolder.Pavadinimas" class="form-control" /></td>
+                                <ValidationMessage For="@(() => trikotazasPlaceHolder.Pavadinimas)" />
                             </tr>
                             <tr>
                                 <td>Kaina<span style="color:red">*</span> </td>
-                                <td><input type="number" placeholder="Trikotazo kaina..." @bind="trikotazasPlaceHolder.Kaina" class="form-control" /></td>
+                                <td><InputNumber placeholder="Trikotazo kaina..." @bind-value="trikotazasPlaceHolder.Kaina" class="form-control" /></td>
+                                <ValidationMessage For="@(() => trikotazasPlaceHolder.Kaina)" />
                             </tr>
                             <tr>
                                 <td>Medziaga<span style="color:red">*</span> </td>
-                                <td><input type="text" placeholder="Trikotazo medžiaga..." @bind="trikotazasPlaceHolder.Medziaga" class="form-control" /></td>
+                                <td><InputText placeholder="Trikotazo medžiaga..." @bind-value="trikotazasPlaceHolder.Medziaga" class="form-control" /></td>
+                                <ValidationMessage For="@(() => trikotazasPlaceHolder.Medziaga)" />
                             </tr>
                             <tr>
                                 <td>Dydis<span style="color:red">*</span> </td>
-                                <td><input type="text" placeholder="Trikotazo dydis..." @bind="trikotazasPlaceHolder.Dydis" class="form-control" /></td>
+                                <td><InputText placeholder="Trikotazo dydis..." @bind-value="trikotazasPlaceHolder.Dydis" class="form-control" /></td>
+                                <ValidationMessage For="@(() => trikotazasPlaceHolder.Dydis)" />
                             </tr>
                             <tr>
                                 <td>Spalva<span style="color:red">*</span> </td>
-                                <td><input type="text" placeholder="Trikotazo spalva..." @bind="trikotazasPlaceHolder.Spalva" class="form-control" /></td>
+                                <td><InputText placeholder="Trikotazo spalva..." @bind-value="trikotazasPlaceHolder.Spalva" class="form-control" /></td>
+                                <ValidationMessage For="@(() => trikotazasPlaceHolder.Spalva)" />
                             </tr>
                             <tr>
                                 <td>Kiekis<span style="color:red">*</span> </td>
-                                <td><input type="number" placeholder="Trikotazo kiekis..." @bind="trikotazasPlaceHolder.Kiekis" class="form-control" /></td>
+                                <td><InputNumber placeholder="Trikotazo kiekis..." @bind-value="trikotazasPlaceHolder.Kiekis" class="form-control" /></td>
+                                <ValidationMessage For="@(() => trikotazasPlaceHolder.Kiekis)" />
                             </tr>
                             <tr>
                                 <td>Subkategorija<span style="color:red">*</span> </td>
@@ -152,6 +173,7 @@
                                             <option value="@tiekejas.Id">@tiekejas.Pavadinimas</option>
                                         }
                                     </InputSelect>
+                                    <ValidationMessage For="@(() => trikotazasPlaceHolder.Fk_TIEKEJAS)" />
                                 </td>
                             </tr>
                         </table>
