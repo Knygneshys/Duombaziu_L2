@@ -188,6 +188,7 @@
     </div>
 }
 
+
 @code {
     [Parameter]
     public string Pav { get; set; }
@@ -221,6 +222,7 @@
 
     public async Task UpdateDB()
     {
+        // TODO padaryti, kad INSERT'intu nauja subkategorijos elementa i DB
         await subkategorijaRepository.UpdateEntity(subkategorija.Pavadinimas, (int)subkategorija.Lytis, placeHolder);
 
         subkategorija = await subkategorijaRepository.GetByKey(placeHolder.Pavadinimas, placeHolder.Lytis);
