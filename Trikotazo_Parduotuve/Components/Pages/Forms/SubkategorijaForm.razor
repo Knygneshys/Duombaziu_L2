@@ -110,8 +110,12 @@
     </table>
 }
 
-<br />
-<button @onclick="() => trikotazasAdditionPopupIsOpen = true">Add trikotažas</button>
+
+@if (!LytisPassed.Equals("nauja"))
+{
+    <br />
+    <button @onclick="() => trikotazasAdditionPopupIsOpen = true">Add trikotažas</button>
+}
 
 @if (trikotazasAdditionPopupIsOpen)
 {
@@ -209,6 +213,7 @@
         if (LytisPassed.Equals("nauja"))
         {
             placeHolder = new Subkategorija();
+            placeHolder.Lytis = Lytis.moterims;
         }
         else
         {
@@ -218,17 +223,25 @@
             trikotazai = await trikotazasRepository.GetFilteredBySubkategorija(subkategorija.Pavadinimas, (int)subkategorija.Lytis);
         }
         tiekejai = await tiekejasRepository.GetAllAsync();
+        trikotazasPlaceHolder.Fk_TIEKEJAS = tiekejai.First().Id;
     }
 
     public async Task UpdateDB()
     {
-        // TODO padaryti, kad INSERT'intu nauja subkategorijos elementa i DB
-        await subkategorijaRepository.UpdateEntity(subkategorija.Pavadinimas, (int)subkategorija.Lytis, placeHolder);
+        if (LytisPassed.Equals("nauja"))
+        {
+            await subkategorijaRepository.Insert(placeHolder);
+            navigationManager.NavigateTo($"/SubkategorijaForm/{placeHolder.Pavadinimas}/{placeHolder.Lytis}");
+        }
+        else
+        {
+            await subkategorijaRepository.UpdateEntity(subkategorija.Pavadinimas, (int)subkategorija.Lytis, placeHolder);
 
-        subkategorija = await subkategorijaRepository.GetByKey(placeHolder.Pavadinimas, placeHolder.Lytis);
-        trikotazai = await trikotazasRepository.GetFilteredBySubkategorija(placeHolder.Pavadinimas, (int)placeHolder.Lytis);
+            subkategorija = await subkategorijaRepository.GetByKey(placeHolder.Pavadinimas, placeHolder.Lytis);
+            trikotazai = await trikotazasRepository.GetFilteredBySubkategorija(placeHolder.Pavadinimas, (int)placeHolder.Lytis);
 
-        navigationManager.NavigateTo($"/SubkategorijaForm/{placeHolder.Pavadinimas}/{placeHolder.Lytis}", forceLoad: true);
+            navigationManager.NavigateTo($"/SubkategorijaForm/{placeHolder.Pavadinimas}/{placeHolder.Lytis}", forceLoad: true);
+        }
     }
 
     public void GoToTrikotazasForm(Trikotazas trikotazas)

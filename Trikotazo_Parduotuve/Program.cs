@@ -3,6 +3,7 @@ using Trikotazo_Parduotuve;
 using Trikotazo_Parduotuve.Components;
 using Trikotazo_Parduotuve.Repositories;
 using Trikotazo_Parduotuve.Entities;
+using System.Net.NetworkInformation;
 
 var builder = WebApplication.CreateBuilder(args);
 

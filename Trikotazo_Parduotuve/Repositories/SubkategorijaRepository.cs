@@ -41,5 +41,13 @@ namespace Trikotazo_Parduotuve.Repositories
                 (int)subkategorija.Lytis, subkategorija.Aprasymas, subkategorija.Fk_KATEGORIJA,
                 pavadinimas, lytis);
         }
+
+        public async Task Insert(Subkategorija subkategorija)
+        {
+            await _context.Database.ExecuteSqlRawAsync("INSERT INTO subkategorija" +
+                "(Pavadinimas, Lytis, Aprasymas, Fk_KATEGORIJA)" +
+                "VALUES ({0}, {1}, {2}, {3})",
+                subkategorija.Pavadinimas, subkategorija.Lytis, subkategorija.Aprasymas, subkategorija.Fk_KATEGORIJA);
+        }
     }
 }
