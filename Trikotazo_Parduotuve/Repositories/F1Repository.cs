@@ -18,6 +18,15 @@
                 .ToListAsync();
         }
 
+
+        public async Task<List<F1>> GetChunk(int chunkSize, int startingRow)
+        {
+            return await _context.F1
+                .FromSqlRaw("SELECT * FROM subkategorija INNER JOIN kategorija ON subkategorija.Fk_KATEGORIJA = kategorija.Pav LIMIT {0} OFFSET {1}",
+                chunkSize, startingRow)
+                .ToListAsync();
+        }
+
         public Task UpdateEntity(F1 entity)
         {
             throw new NotImplementedException();
