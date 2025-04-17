@@ -58,7 +58,7 @@
             <label>
                 Kategorija:
             </label>
-            <InputSelect @bind-Value="placeHolder.Fk_KATEGORIJA" class="form-control" style="width:100px">
+            <InputSelect @bind-Value="placeHolder.Fk_KATEGORIJA" class="form-control" style="width:200px">
                 @foreach (Kategorija kategorija in kategorijos)
                 {
                     <option value="@kategorija.Pav">@kategorija.Pav</option>
@@ -193,6 +193,11 @@
 }
 
 
+@if(alreadyExistsErrorIsVisible)
+{
+    <h2 style="color:red">Subkategorija tokiu vardu ir tokiai lyčiai jau egzistuoja!</h2>
+}
+
 @code {
     [Parameter]
     public string Pav { get; set; }
@@ -206,6 +211,7 @@
     public List<Tiekejas> tiekejai;
     public bool trikotazasAdditionPopupIsOpen = false;
     public Trikotazas trikotazasPlaceHolder = new Trikotazas();
+    public bool alreadyExistsErrorIsVisible = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -230,8 +236,14 @@
     {
         if (LytisPassed.Equals("nauja"))
         {
-            await subkategorijaRepository.Insert(placeHolder);
-            navigationManager.NavigateTo($"/SubkategorijaForm/{placeHolder.Pavadinimas}/{placeHolder.Lytis}");
+            try
+            {
+                await subkategorijaRepository.Insert(placeHolder);
+                navigationManager.NavigateTo($"/SubkategorijaForm/{placeHolder.Pavadinimas}/{placeHolder.Lytis}");
+            } catch (Exception e)
+            {
+                alreadyExistsErrorIsVisible = true;
+            }
         }
         else
         {

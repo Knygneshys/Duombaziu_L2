@@ -1,4 +1,4 @@
-﻿@page "/SubkategorijaList"
+﻿@page "/SubkategorijaList/{Page:int}"
 @using Trikotazo_Parduotuve.Entities
 @using Trikotazo_Parduotuve.Repositories
 @inject SubkategorijaRepository subkategorijaRepository
@@ -51,12 +51,15 @@ else
 }
 
 @code {
+    [Parameter]
+    public int Page { get; set; }
     private List<F1> f1Items;
     private bool deletionWarningIsVisible = false;
 
     protected override async Task OnInitializedAsync()
     {
         f1Items = await f1Repository.GetAllAsync();
+
     }
 
     public void GoToSubkategorijaForm(F1 joinedTables)
