@@ -26,6 +26,14 @@ namespace Trikotazo_Parduotuve.Repositories
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<List<Kategorija>> GetChunk(int chunkSize, int startingRow)
+        {
+            return await _context.Kategorijos
+                .FromSqlRaw("SELECT * FROM kategorija LIMIT {0} OFFSET {1}",
+                chunkSize, startingRow)
+                .ToListAsync();
+        }
+
         public async Task UpdateEntity(Kategorija kategorija)
         {
             await _context.Database.ExecuteSqlRawAsync(

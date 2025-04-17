@@ -64,12 +64,12 @@ else
     public int Page { get; set; }
     private List<F1> f1Items;
     private bool deletionWarningIsVisible = false;
-    const int chunkSize = 8;
+    const int CHUNK_SIZE = 8;
 
     protected override async Task OnInitializedAsync()
     {
         // f1Items = await f1Repository.GetAllAsync();
-        f1Items = await f1Repository.GetChunk(chunkSize, Page * chunkSize - (chunkSize - 1));
+        f1Items = await f1Repository.GetChunk(CHUNK_SIZE, Page * CHUNK_SIZE - (CHUNK_SIZE - 1));
         if(f1Items.Count < 1)
         {
             navigationManager.NavigateTo($"/SubkategorijaList/{Page - 1}");

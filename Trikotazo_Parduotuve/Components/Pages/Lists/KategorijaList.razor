@@ -1,4 +1,4 @@
-﻿@page "/KategorijaList"
+﻿@page "/KategorijaList/{Page:int}"
 @using Trikotazo_Parduotuve.Entities
 @using Trikotazo_Parduotuve.Repositories
 @inject KategorijaRepository kategorijaRepository
@@ -33,18 +33,41 @@ else
     </table>
 }
 
+<div style="float:left;width:100%;text-align:center">
+    <button @onclick="()=>GoToPage(Page-1)">Previous</button>
+    <span>@Page</span>
+    <button @onclick="()=>GoToPage(Page+1)">Next</button>
+</div>
+<br />
+<br />
+
 @code {
+    [Parameter]
+    public int Page { get; set; }
     public List<Kategorija> kategorijos;
     const int CHUNK_SIZE = 8;
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadKategorijas();
+        // await LoadKategorijas();
+        kategorijos = await kategorijaRepository.GetChunk(CHUNK_SIZE, Page * CHUNK_SIZE - (CHUNK_SIZE - 1));
+        if (kategorijos.Count < 1)
+        {
+            navigationManager.NavigateTo($"/KategorijaList/{Page - 1}");
+        }
     }
 
     private async Task LoadKategorijas()
     {
         kategorijos = await kategorijaRepository.GetAllAsync();
+    }
+
+    public void GoToPage(int page)
+    {
+        if (page > 0)
+        {
+            navigationManager.NavigateTo($"/KategorijaList/{page}");
+        }
     }
 
     public void GoToKategorijaForm(Kategorija kategorija)
