@@ -1,66 +1,35 @@
 ﻿@page "/"
-@using Trikotazo_Parduotuve.Entities
-@using Trikotazo_Parduotuve.Repositories
-@inject KategorijaRepository kategorijaRepository;
-@inject SubkategorijaRepository subkategorijaRepository;
-@inject TrikotazasRepository trikotazasRepository;
-@inject TiekejasRepository tiekejasRepository;
+@inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
-@if(tiekejai is null)
-{
-    <p>Loading...</p>
-}
-else
-{
-    foreach(Tiekejas tiekeas in tiekejai)
-    {
-        <p>@tiekeas.Pavadinimas</p>
-        <p>@tiekeas.Kontaktinis_asmuo</p>
-    }
-}
 
-<button @onclick=Work >Spausk</button>
+<div style="float:left">
+    <h2>Kategorijos</h2>
+    <p>Kategorijų peržiūra, redagavimas</p>
+    <button @onclick="() => GoToList(KATEGORIJOS_LINK)">Peržiūrėti</button>
+</div>
+
+<div style="float:left;margin-left:10px;margin-right:10px">
+    <h2>Subkategorija</h2>
+    <p>Subkategorijų sudarymas peržiūra, redagavimas</p>
+    <button @onclick="() => GoToList(SUBKATEGORIJOS_LINK)">Peržiūrėti</button>
+</div>
+
+<div style="float:left">
+    <h2>Trikotažas</h2>
+    <p>Trikotažo peržiūra, redagavimas</p>
+    <button @onclick="() => GoToList(TRIKOTAZAS_LINK)">Peržiūrėti</button>
+</div>
 
 @code{
-    private List<Kategorija> kategorijos;
-    private List<Subkategorija> subkategorijos;
-    private List<Trikotazas> trikotazai;
-    private List<Tiekejas> tiekejai;
-    public bool visible = false;
+    private const string KATEGORIJOS_LINK = "/KategorijaList/1";
+    private const string SUBKATEGORIJOS_LINK = "/SubkategorijaList/1";
+    private const string TRIKOTAZAS_LINK = "/TrikotazasList/1";
 
-    protected override async Task OnInitializedAsync()
+    public void GoToList(string link)
     {
-        await LoadTiekejus();
-        // await LoadKategorijas();
-        // await LoadSubkategorijas();
-        // await LoadTrikotazus();
-    }
-
-    private async Task LoadKategorijas()
-    {
-        kategorijos = await kategorijaRepository.GetAllAsync();
-    }
-
-    private async Task LoadSubkategorijas()
-    {
-        subkategorijos = await subkategorijaRepository.GetAllAsync();
-    }
-
-    private async Task LoadTrikotazus()
-    {
-        trikotazai = await trikotazasRepository.GetAllAsync();
-    }
-
-    private async Task LoadTiekejus()
-    {
-        tiekejai = await tiekejasRepository.GetAllAsync();
-    }
-
-    public void Work()
-    {
-        visible = true;
+        navigationManager.NavigateTo($"{link}");
     }
 }
