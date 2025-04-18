@@ -22,7 +22,7 @@ namespace Trikotazo_Parduotuve.Repositories
         public async Task<Kategorija> GetByKey(string pav)
         {
             return await _context.Kategorijos
-                .FromSqlRaw("SELECT * FROM kategorija WHERE Pavadinimas = {0}", pav)
+                .FromSqlRaw("SELECT * FROM kategorija WHERE Pav = {0}", pav)
                 .FirstOrDefaultAsync();
         }
 
