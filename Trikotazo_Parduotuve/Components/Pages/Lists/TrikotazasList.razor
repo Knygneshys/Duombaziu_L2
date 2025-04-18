@@ -1,0 +1,35 @@
+﻿@page "/TrikotazasList/{Page:int}"
+@using Trikotazo_Parduotuve.Entities
+@using Trikotazo_Parduotuve.Repositories
+@inject TrikotazasRepository trikotazasRepository
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+<h3>Trikotazas</h3>
+
+@if(trikotazai is null)
+{
+    <h2>Loading...</h2>
+}
+else
+{
+    foreach(Trikotazas trikotazas in trikotazai)
+    {
+        
+    }
+}
+
+@code {
+    [Parameter]
+    public int Page { get; set; }
+    public List<Trikotazas> trikotazai;
+    const int CHUNK_SIZE = 8;
+
+    protected override async Task OnInitializedAsync()
+    {
+        trikotazai = await trikotazasRepository.GetChunk(CHUNK_SIZE, Page * CHUNK_SIZE - (CHUNK_SIZE - 1));
+        if (trikotazai.Count < 1)
+        {
+            navigationManager.NavigateTo($"/TrikotazasList/{Page - 1}");
+        }
+    }
+}

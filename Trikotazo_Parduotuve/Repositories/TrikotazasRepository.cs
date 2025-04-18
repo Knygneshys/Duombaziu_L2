@@ -36,6 +36,14 @@
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<List<Trikotazas>> GetChunk(int chunkSize, int startingRow)
+        {
+            return await _context.Trikotazai
+                .FromSqlRaw("SELECT * FROM trikotazas LIMIT {0} OFFSET {1}",
+                chunkSize, startingRow)
+                .ToListAsync();
+        }
+
         public async Task UpdateEntity(int id, Trikotazas trikotazas)
         {
             await _context.Database.ExecuteSqlRawAsync(
