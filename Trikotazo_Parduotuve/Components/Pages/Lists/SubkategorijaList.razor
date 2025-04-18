@@ -69,7 +69,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         // f1Items = await f1Repository.GetAllAsync();
-        f1Items = await f1Repository.GetChunk(CHUNK_SIZE, Page * CHUNK_SIZE - (CHUNK_SIZE - 1));
+        f1Items = await f1Repository.GetChunk(CHUNK_SIZE, Page * CHUNK_SIZE - CHUNK_SIZE);
         if(f1Items.Count < 1)
         {
             navigationManager.NavigateTo($"/SubkategorijaList/{Page - 1}");

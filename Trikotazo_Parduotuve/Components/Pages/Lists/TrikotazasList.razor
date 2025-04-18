@@ -12,10 +12,51 @@
 }
 else
 {
-    foreach(Trikotazas trikotazas in trikotazai)
-    {
-        
-    }
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Pavadinimas</th>
+                <th scope="col">Kaina</th>
+                <th scope="col">Medžiaga</th>
+                <th scope="col">Dydis</th>
+                <th scope="col">Spalva</th>
+                <th scope="col">Kiekis</th>
+                <th scope="col">Paskutinis atnaujinimas</th>
+                <th scope="col">Subkategorija</th>
+                <th scope="col">Lytis</th>
+                <th scope="col">Tiekėjas</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Trikotazas trikotazas in trikotazai)
+            {
+                <tr>
+                    <td>@trikotazas.Id</td>
+                    <td>@trikotazas.Pavadinimas</td>
+                    <td>@trikotazas.Kaina</td>
+                    <td>@trikotazas.Medziaga</td>
+                    <td>@trikotazas.Dydis</td>
+                    <td>@trikotazas.Spalva</td>
+                    <td>@trikotazas.Kiekis</td>
+                    <td>@trikotazas.Paskutinis_atnaujinimas.ToShortDateString()</td>
+                    <td>@trikotazas.Fk_SUBKATEGORIJA_pav</td>
+                    <td>@((Lytis)trikotazas.Fk_SUBKATEGORIJA_lytis)</td>
+                    <td>@trikotazas.Fk_TIEKEJAS</td>
+                    <td><button @onclick="()=>GoToTrikotazasForm(trikotazas.Id)">Peržiūrėti</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <div style="float:left;width:100%;text-align:center">
+        <button @onclick="()=>GoToPage(Page-1)">Previous</button>
+        <span>@Page</span>
+        <button @onclick="()=>GoToPage(Page+1)">Next</button>
+    </div>
+    <br />
+    <br />
 }
 
 @code {
@@ -26,10 +67,23 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        trikotazai = await trikotazasRepository.GetChunk(CHUNK_SIZE, Page * CHUNK_SIZE - (CHUNK_SIZE - 1));
+        trikotazai = await trikotazasRepository.GetChunk(CHUNK_SIZE, Page * CHUNK_SIZE - CHUNK_SIZE);
         if (trikotazai.Count < 1)
         {
             navigationManager.NavigateTo($"/TrikotazasList/{Page - 1}");
         }
+    }
+
+    public void GoToPage(int page)
+    {
+        if (page > 0)
+        {
+            navigationManager.NavigateTo($"/TrikotazasList/{page}");
+        }
+    }
+
+    public void GoToTrikotazasForm(int id)
+    {
+        navigationManager.NavigateTo($"/TrikotazasForm/{id}");
     }
 }
