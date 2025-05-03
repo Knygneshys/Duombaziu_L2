@@ -26,7 +26,12 @@
             <label>
                 Pasirinkite lytį:
             </label>
-            <InputNumber class="form-control" @bind-Value="@lytis" />
+            <InputSelect @bind-Value="lytis" class="form-control" style="width:200px">
+                @foreach (Lytis lytis in Enum.GetValues(typeof(Lytis)))
+                {
+                    <option value="@lytis">@lytis</option>
+                }
+            </InputSelect>
         </div>
 
         <div class="form-group">
@@ -47,7 +52,7 @@
 
 @code {
     private bool filterFormIsVisible = true;
-    private int lytis;
+    private Lytis lytis;
     private Kategorija kategorija;
     private double minKaina;
     private double maxKaina;
