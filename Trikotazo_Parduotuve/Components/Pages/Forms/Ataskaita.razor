@@ -9,12 +9,12 @@
 
 @if(filterFormIsVisible && kategorijos != null)
 {
-    <EditForm Model="this" OnValidSubmit="Filter">
+    <EditForm Model="model" OnValidSubmit="Filter" FormName="AtaskaitaForm">
         <div class="form-group">
             <label>
                 Pasirinkite kategoriją:
             </label>
-            <InputSelect @bind-Value="kategorija.Pav" class="form-control" style="width:200px">
+            <InputSelect @bind-Value="model.Kategorija" class="form-control" style="width:200px">
                 @foreach (Kategorija kategorija in kategorijos)
                 {
                     <option value="@kategorija.Pav">@kategorija.Pav</option>
@@ -26,7 +26,7 @@
             <label>
                 Pasirinkite lytį:
             </label>
-            <InputSelect @bind-Value="lytis" class="form-control" style="width:200px">
+            <InputSelect @bind-Value="model.Lytis" class="form-control" style="width:200px">
                 @foreach (Lytis lytis in Enum.GetValues(typeof(Lytis)))
                 {
                     <option value="@lytis">@lytis</option>
@@ -38,34 +38,63 @@
             <label>
                 Pasirinkite min kainą:
             </label>
-            <InputNumber class="form-control" @bind-Value="@minKaina" />
+            <InputNumber class="form-control" @bind-Value="@model.MinKaina" style="width:200px" />
         </div>
 
         <div class="form-group">
             <label>
                 Pasirinkite max kainą:
             </label>
-            <InputNumber class="form-control" @bind-Value="@maxKaina" />
+            <InputNumber class="form-control" @bind-Value="@model.MaxKaina" style="width:200px" />
         </div>
+        <br/>
+        <button type="submit">Kurti ataskaitą</button>
     </EditForm>
+}
+else
+{
+    <p>@model.Kategorija</p>
+    <p>@model.Lytis</p>
+    <p>@model.MinKaina</p>
+    <p>@model.MaxKaina</p>
 }
 
 @code {
     private bool filterFormIsVisible = true;
-    private Lytis lytis;
-    private Kategorija kategorija;
-    private double minKaina;
-    private double maxKaina;
     private List<Kategorija> kategorijos;
+    private FilterModel model;
 
     protected override async Task OnInitializedAsync()
     {
-        kategorija = new Kategorija();
+        model = new FilterModel();
         kategorijos = await kategorijaRepository.GetAllAsync();
     }
 
     private void Filter()
     {
-        
+        if (model.MinKaina <= model.MaxKaina)
+        {
+            filterFormIsVisible = false;
+        }
+    }
+
+    private class FilterModel
+    {
+        public FilterModel()
+        {
+        }
+
+        public FilterModel(Lytis lytis, string kategorija, double minKaina, double maxKaina)
+        {
+            this.Lytis = lytis;
+            this.Kategorija = kategorija;
+            this.MinKaina = minKaina;
+            this.MaxKaina = maxKaina;
+        }
+
+        public Lytis Lytis { get; set; }
+        public string Kategorija { get; set; }
+        public double MinKaina { get; set; } = 0;
+        public double MaxKaina { get; set; } = 100;
     }
 }
