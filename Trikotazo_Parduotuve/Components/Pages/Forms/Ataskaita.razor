@@ -1,0 +1,53 @@
+﻿@using Trikotazo_Parduotuve.Repositories
+@using Trikotazo_Parduotuve.Entities
+@page "/Ataskaita"
+
+<h3>Ataskaita</h3>
+<p>Sudaro trikotažo ataskaitą, kurią filtruoja pagal  (Kategorija) kategoriją, (Subkategorija) lytį, (Trikotazas) max ir min kainos?</p>
+<p>Galima rikiuoti pagal kainą</p>
+
+@if(filterFormIsVisible)
+{
+    <EditForm Model="this" OnValidSubmit="Filter">
+        <div class="form-group">
+            <label>
+                Pasirinkite kategorija:
+            </label>
+            <InputText class="form-control" @bind-Value="@kategorija" />
+        </div>
+
+        <div class="form-group">
+            <label>
+                Pasirinkite lytį:
+            </label>
+            <InputNumber class="form-control" @bind-Value="@lytis" />
+        </div>
+        
+        <div class="form-group">
+            <label>
+                Pasirinkite min kainą:
+            </label>
+            <InputNumber class="form-control" @bind-Value="@minKaina" />
+        </div>
+
+        <div class="form-group">
+            <label>
+                Pasirinkite max kainą:
+            </label>
+            <InputNumber class="form-control" @bind-Value="@maxKaina" />
+        </div>
+    </EditForm>
+}
+
+@code {
+    private bool filterFormIsVisible = true;
+    private int lytis;
+    private string kategorija;
+    private double minKaina;
+    private double maxKaina;
+
+    private void Filter()
+    {
+        
+    }
+}
