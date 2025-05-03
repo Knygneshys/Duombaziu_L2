@@ -1,6 +1,7 @@
 ﻿@using Trikotazo_Parduotuve.Repositories
 @using Trikotazo_Parduotuve.Entities
 @inject KategorijaRepository kategorijaRepository
+@rendermode InteractiveServer
 @page "/Ataskaita"
 
 <h3>Ataskaita</h3>
@@ -62,12 +63,14 @@ else
 @code {
     private bool filterFormIsVisible = true;
     private List<Kategorija> kategorijos;
-    private FilterModel model;
+    public FilterModel model;
 
     protected override async Task OnInitializedAsync()
     {
         model = new FilterModel();
         kategorijos = await kategorijaRepository.GetAllAsync();
+        model.Lytis = Lytis.moterims;
+        model.Kategorija= kategorijos.First().Pav;
     }
 
     private void Filter()
@@ -78,7 +81,7 @@ else
         }
     }
 
-    private class FilterModel
+    public class FilterModel
     {
         public FilterModel()
         {
