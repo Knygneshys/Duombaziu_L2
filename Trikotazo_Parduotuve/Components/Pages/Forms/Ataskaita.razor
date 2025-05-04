@@ -6,6 +6,8 @@
 
 <h3>Ataskaita</h3>
 <p>Sudaro trikotažo ataskaitą, kurią filtruoja pagal  (Kategorija) kategoriją, (Subkategorija) lytį, (Trikotazas) max ir min kainos?</p>
+<p>Pirma atrenka visas subkategorijas (bei subkategorijoje esančio trikotažo skaičių su Count funkcija) su viena užklausa</p>
+<p>Tada su kita atrenka visą subkategorijai priklausantį trikotažą (galima panaudoti left/right join, kad prijungčiau tiekėją)</p>
 <p>Galima rikiuoti pagal kainą</p>
 
 @if(filterFormIsVisible && kategorijos != null)
@@ -78,6 +80,7 @@ else
         if (model.MinKaina <= model.MaxKaina)
         {
             filterFormIsVisible = false;
+
         }
     }
 
