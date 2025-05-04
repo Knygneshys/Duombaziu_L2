@@ -2,6 +2,7 @@
 {
     public class AtaskaitaEntry
     {
+        public int Id { get; set; }
         public string Kategorija { get; set; }
         public Lytis Lytis { get; set; }
         public float Kaina { get; set; }

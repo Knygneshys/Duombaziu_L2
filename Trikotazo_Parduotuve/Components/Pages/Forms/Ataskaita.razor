@@ -1,6 +1,7 @@
 ﻿@using Trikotazo_Parduotuve.Repositories
 @using Trikotazo_Parduotuve.Entities
 @inject KategorijaRepository kategorijaRepository
+@inject AtaskaitaRepository ataskaitaRepository
 @rendermode InteractiveServer
 @page "/Ataskaita"
 
@@ -54,17 +55,22 @@
         <button type="submit">Kurti ataskaitą</button>
     </EditForm>
 }
-else
+else if(topics != null)
 {
     <p>@model.Kategorija</p>
     <p>@model.Lytis</p>
     <p>@model.MinKaina</p>
     <p>@model.MaxKaina</p>
+    @foreach(AtaskaitaTopic topic in topics)
+    {
+        <p>@topic.Subkategorija  |   @topic.Trikotazo_count</p>
+    }
 }
 
 @code {
     private bool filterFormIsVisible = true;
     private List<Kategorija> kategorijos;
+    private List<AtaskaitaTopic> topics;
     public FilterModel model;
 
     protected override async Task OnInitializedAsync()
@@ -75,12 +81,12 @@ else
         model.Kategorija= kategorijos.First().Pav;
     }
 
-    private void Filter()
+    private async Task Filter()
     {
         if (model.MinKaina <= model.MaxKaina)
         {
             filterFormIsVisible = false;
-
+            topics = await ataskaitaRepository.GetAllTopics(model.Kategorija, model.Lytis);
         }
     }
 
