@@ -22,6 +22,7 @@ builder.Services.AddScoped<SubkategorijaRepository>();
 builder.Services.AddScoped<F1Repository>();
 builder.Services.AddScoped<TiekejasRepository>();
 builder.Services.AddScoped<TrikotazasRepository>();
+builder.Services.AddScoped<AtaskaitaRepository>();
 
 var app = builder.Build();
 
