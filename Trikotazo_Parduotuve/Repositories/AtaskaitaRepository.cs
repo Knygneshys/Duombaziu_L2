@@ -31,22 +31,10 @@
                 "ON trikotazas.Fk_SUBKATEGORIJA_pav = subkategorija.Pavadinimas AND trikotazas.Fk_SUBKATEGORIJA_lytis = subkategorija.Lytis " +
                 "LEFT JOIN tiekejas " +
                 "ON trikotazas.Fk_TIEKEJAS = tiekejas.Id " +
-                "WHERE subkategorija.Pavadinimas = {0} AND Lytis = {1} AND trikotazas.Kaina BETWEEN {2} AND {3}",
+                "WHERE subkategorija.Pavadinimas = {0} AND Lytis = {1} AND trikotazas.Kaina BETWEEN {2} AND {3} " +
+                "ORDER BY Kaina",
                 subkategorija, (int)lytis, minKaina, maxKaina)
                 .ToListAsync();
         }
-        /*
-            SELECT subkategorija.Pavadinimas AS Subkategorija, COUNT(*) AS Trikotazo_count
-            FROM subkategorija
-            WHERE subkategorija.Lytis = 'vyrams'
-         */
-
-        //public async Task<Ataskaita> GetAtaskaitaAsync(Ataskaita ataskaita)
-        //{
-        //    return await _context.Ataskaitos
-        //        .FromSqlRaw("SELECT kategorija.Pav, subkategorija.Lytis, trikotazas.Kaina, trikotazas.Fk_TIEKEJAS" +
-        //        "WHERE ")
-        //        .FirstOrDefaultAsync();
-        //}
     }
 }
