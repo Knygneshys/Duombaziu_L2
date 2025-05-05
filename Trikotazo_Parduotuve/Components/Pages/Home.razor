@@ -17,10 +17,16 @@
     <button @onclick="() => GoToList(SUBKATEGORIJOS_LINK)">Peržiūrėti</button>
 </div>
 
-<div style="float:left">
+<div style="float:left;margin-left:10px;margin-right:10px">
     <h2>Trikotažas</h2>
     <p>Trikotažo peržiūra, redagavimas</p>
     <button @onclick="() => GoToList(TRIKOTAZAS_LINK)">Peržiūrėti</button>
+</div>
+
+<div style="float:left">
+    <h2>Ataskaita</h2>
+    <p>Trikotažo ataskaita pagal kategoriją bei lytį tam tikrame kainų intervale</p>
+    <button @onclick="() => GoToAtaskaita()">Peržiūrėti</button>
 </div>
 
 @code{
@@ -31,5 +37,10 @@
     public void GoToList(string link)
     {
         navigationManager.NavigateTo($"{link}");
+    }
+
+    public void GoToAtaskaita()
+    {
+        navigationManager.NavigateTo("/Ataskaita");
     }
 }
