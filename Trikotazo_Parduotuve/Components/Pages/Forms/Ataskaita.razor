@@ -63,11 +63,34 @@ else if(topics != null)
     <p>@model.MaxKaina</p>
     @foreach(AtaskaitaTopic topic in topics)
     {
-        <p>@topic.Subkategorija  |   @topic.Trikotazo_count</p>
-        @foreach(AtaskaitaEntry entry in entries[index++])
-        {
-            <p>@entry.Kategorija  @entry.Kaina  @entry.Tiekejas</p>
-        }
+        <h3>@topic.Subkategorija  |   @topic.Trikotazo_count</h3>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Pavadinimas</th>
+                    <th scope="col">Kaina</th>
+                    <th scope="col">Medžiaga</th>
+                    <th scope="col">Dydis</th>
+                    <th scope="col">Spalva</th>
+                    <th scope="col">Kiekis</th>
+                    <th scope="col">Tiekėjas</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(AtaskaitaEntry entry in entries[index++])
+                {
+                   <tr>
+                       <td>@entry.Pavadinimas</td>
+                       <td>@entry.Kaina</td>
+                       <td>@entry.Medziaga</td>
+                       <td>@entry.Dydis</td>
+                       <td>@entry.Spalva</td>
+                       <td>@entry.Kiekis</td>
+                       <td>@entry.Tiekejas</td>
+                   </tr>
+                }
+            </tbody>
+        </table>
     }
 }
 

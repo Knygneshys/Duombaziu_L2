@@ -26,7 +26,7 @@
         {
             return await _context.AtaskaitosEntries
                 .FromSqlRaw(
-                "SELECT subkategorija.Fk_KATEGORIJA AS Kategorija, trikotazas.Fk_SUBKATEGORIJA_lytis AS Lytis, trikotazas.Kaina AS Kaina, tiekejas.Pavadinimas AS Tiekejas " +
+                "SELECT trikotazas.Pavadinimas, trikotazas.Kaina AS Kaina, trikotazas.Medziaga, trikotazas.Dydis, trikotazas.Spalva, trikotazas.Kiekis, tiekejas.Pavadinimas AS Tiekejas " +
                 "FROM trikotazas LEFT JOIN subkategorija " +
                 "ON trikotazas.Fk_SUBKATEGORIJA_pav = subkategorija.Pavadinimas AND trikotazas.Fk_SUBKATEGORIJA_lytis = subkategorija.Lytis " +
                 "LEFT JOIN tiekejas " +
