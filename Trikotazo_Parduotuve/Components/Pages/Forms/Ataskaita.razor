@@ -64,6 +64,10 @@ else if(topics != null)
     @foreach(AtaskaitaTopic topic in topics)
     {
         <p>@topic.Subkategorija  |   @topic.Trikotazo_count</p>
+        @foreach(AtaskaitaEntry entry in entries[index++])
+        {
+            <p>@entry.Kategorija  @entry.Kaina  @entry.Tiekejas</p>
+        }
     }
 }
 
@@ -71,7 +75,9 @@ else if(topics != null)
     private bool filterFormIsVisible = true;
     private List<Kategorija> kategorijos;
     private List<AtaskaitaTopic> topics;
+    private List<List<AtaskaitaEntry>> entries;
     public FilterModel model;
+    private int index;
 
     protected override async Task OnInitializedAsync()
     {
@@ -79,15 +85,26 @@ else if(topics != null)
         kategorijos = await kategorijaRepository.GetAllAsync();
         model.Lytis = Lytis.moterims;
         model.Kategorija= kategorijos.First().Pav;
+        entries = new List<List<AtaskaitaEntry>>();
+        index = 0;
     }
 
     private async Task Filter()
     {
-        if (model.MinKaina <= model.MaxKaina)
+        if (model.MinKaina >= 0 && model.MinKaina <= model.MaxKaina)
         {
             filterFormIsVisible = false;
-            topics = await ataskaitaRepository.GetAllTopics(model.Kategorija, model.Lytis);
+            topics = await ataskaitaRepository.GetAllTopics(model.Kategorija, model.Lytis, model.MinKaina, model.MaxKaina);
+            foreach(AtaskaitaTopic topic in topics)
+            {
+                entries.Add(await GetEntriesForTopic(topic));
+            }
         }
+    }
+    public async Task<List<AtaskaitaEntry>> GetEntriesForTopic(AtaskaitaTopic topic)
+    {
+        List<AtaskaitaEntry> res = await ataskaitaRepository.GetEntriesByTopic(topic.Subkategorija, model.Lytis, model.MinKaina, model.MaxKaina);
+        return res;
     }
 
     public class FilterModel
@@ -96,7 +113,7 @@ else if(topics != null)
         {
         }
 
-        public FilterModel(Lytis lytis, string kategorija, double minKaina, double maxKaina)
+        public FilterModel(Lytis lytis, string kategorija, float minKaina, float maxKaina)
         {
             this.Lytis = lytis;
             this.Kategorija = kategorija;
@@ -106,7 +123,7 @@ else if(topics != null)
 
         public Lytis Lytis { get; set; }
         public string Kategorija { get; set; }
-        public double MinKaina { get; set; } = 0;
-        public double MaxKaina { get; set; } = 100;
+        public float MinKaina { get; set; } = 0;
+        public float MaxKaina { get; set; } = 100;
     }
 }
