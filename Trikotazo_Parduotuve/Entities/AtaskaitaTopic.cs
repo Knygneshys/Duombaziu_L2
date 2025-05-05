@@ -9,5 +9,6 @@ namespace Trikotazo_Parduotuve.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Subkategorija { get; set; }
         public int Trikotazo_count { get; set; }
+        public int Bendras_trikotazo_kiekis { get; set; }
     }
 }

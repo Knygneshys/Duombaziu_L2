@@ -5,14 +5,11 @@
 @rendermode InteractiveServer
 @page "/Ataskaita"
 
-<h3>Ataskaita</h3>
-<p>Sudaro trikotažo ataskaitą, kurią filtruoja pagal  (Kategorija) kategoriją, (Subkategorija) lytį, (Trikotazas) max ir min kainos?</p>
-<p>Pirma atrenka visas subkategorijas (bei subkategorijoje esančio trikotažo skaičių su Count funkcija) su viena užklausa</p>
-<p>Tada su kita atrenka visą subkategorijai priklausantį trikotažą (galima panaudoti left/right join, kad prijungčiau tiekėją)</p>
-<p>Galima rikiuoti pagal kainą</p>
+<h1>Ataskaita</h1>
 
 @if(filterFormIsVisible && kategorijos != null)
 {
+    <p>Pasirinkite filtravimo kriterijus, pagal kuriuos bus išfiltruotos kategorijai priklausančios subkategorijos. Po kiekviena iš pastarųjų bus pateiktas į kainos intervalą įeinantis trikotažas</p>
     <EditForm Model="model" OnValidSubmit="Filter" FormName="AtaskaitaForm">
         <div class="form-group">
             <label>
@@ -57,13 +54,10 @@
 }
 else if(topics != null)
 {
-    <p>@model.Kategorija</p>
-    <p>@model.Lytis</p>
-    <p>@model.MinKaina</p>
-    <p>@model.MaxKaina</p>
+    <p>@model.Kategorija @model.Lytis nuo @model.MinKaina € iki @model.MaxKaina €</p>
     @foreach(AtaskaitaTopic topic in topics)
     {
-        <h3>@topic.Subkategorija  |   @topic.Trikotazo_count</h3>
+        <h3>@topic.Subkategorija (@topic.Trikotazo_count)</h3>
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
@@ -90,6 +84,13 @@ else if(topics != null)
                    </tr>
                 }
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" style="text-align:right"><strong>Iš viso:</strong></td>
+                    <td><strong>@topic.Bendras_trikotazo_kiekis</strong></td>
+                    <td></td>
+                </tr>
+            </tfoot>
         </table>
     }
 }

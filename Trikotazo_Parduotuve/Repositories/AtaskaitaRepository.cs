@@ -14,7 +14,8 @@
         public async Task<List<AtaskaitaTopic>> GetAllTopics(string kategorija, Lytis lytis, float minKaina, float maxKaina)
         {
             return await _context.AtaskaitosTopics
-                .FromSqlRaw("SELECT subkategorija.Pavadinimas AS Subkategorija, (SELECT COUNT(*) FROM trikotazas WHERE trikotazas.Fk_SUBKATEGORIJA_pav = Subkategorija AND trikotazas.Fk_SUBKATEGORIJA_lytis = {1} AND trikotazas.Kaina BETWEEN {2} AND {3}) AS Trikotazo_count " +
+                .FromSqlRaw("SELECT subkategorija.Pavadinimas AS Subkategorija, (SELECT COUNT(*) FROM trikotazas WHERE trikotazas.Fk_SUBKATEGORIJA_pav = Subkategorija AND trikotazas.Fk_SUBKATEGORIJA_lytis = {1} AND trikotazas.Kaina BETWEEN {2} AND {3}) AS Trikotazo_count, " +
+                "(SELECT SUM(trikotazas.Kiekis) FROM trikotazas WHERE trikotazas.Fk_SUBKATEGORIJA_pav = Subkategorija AND trikotazas.Fk_SUBKATEGORIJA_lytis = 2 AND trikotazas.Kaina BETWEEN 0 AND 100) AS Bendras_trikotazo_kiekis " +
                 "FROM subkategorija " +
                 "WHERE subkategorija.Fk_KATEGORIJA = {0} AND subkategorija.Lytis = {1} " +
                 "GROUP BY Subkategorija",
