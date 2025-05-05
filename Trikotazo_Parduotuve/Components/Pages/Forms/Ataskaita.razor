@@ -2,8 +2,10 @@
 @using Trikotazo_Parduotuve.Entities
 @inject KategorijaRepository kategorijaRepository
 @inject AtaskaitaRepository ataskaitaRepository
+@inject NavigationManager navigationManager
 @rendermode InteractiveServer
 @page "/Ataskaita"
+
 
 <h1>Ataskaita</h1>
 
@@ -54,7 +56,7 @@
 }
 else if(topics != null)
 {
-    <p>@model.Kategorija @model.Lytis nuo @model.MinKaina € iki @model.MaxKaina €</p>
+    <h2 style="margin-top:20px;margin-bottom:20px"><i>@model.Kategorija @model.Lytis nuo @model.MinKaina € iki @model.MaxKaina €</i></h2>
     @foreach(AtaskaitaTopic topic in topics)
     {
         <h3>@topic.Subkategorija (@topic.Trikotazo_count)</h3>
@@ -71,17 +73,20 @@ else if(topics != null)
                 </tr>
             </thead>
             <tbody>
-                @foreach(AtaskaitaEntry entry in entries[index++])
+                @if(index < entries.Count)
                 {
-                   <tr>
-                       <td>@entry.Pavadinimas</td>
-                       <td>@entry.Kaina</td>
-                       <td>@entry.Medziaga</td>
-                       <td>@entry.Dydis</td>
-                       <td>@entry.Spalva</td>
-                       <td>@entry.Kiekis</td>
-                       <td>@entry.Tiekejas</td>
-                   </tr>
+                    @foreach(AtaskaitaEntry entry in entries[index++])
+                    {
+                        <tr>
+                            <td>@entry.Pavadinimas</td>
+                            <td>@entry.Kaina</td>
+                            <td>@entry.Medziaga</td>
+                            <td>@entry.Dydis</td>
+                            <td>@entry.Spalva</td>
+                            <td>@entry.Kiekis</td>
+                            <td>@entry.Tiekejas</td>
+                        </tr>
+                    }
                 }
             </tbody>
             <tfoot>
@@ -93,10 +98,16 @@ else if(topics != null)
             </tfoot>
         </table>
     }
+    <button @onclick="() => GoToAtaskaitaPage()" style="float:left;margin:20px;margin-left:0px">Kurti naują ataskaitą</button>
+}
+@if(errorMessageIsVisible)
+{
+    <p style="margin-top:20px;color:red">Pagal pasirinktus kriterijus nepavyko rasti trikotažo...</p>
 }
 
 @code {
     private bool filterFormIsVisible = true;
+    private bool errorMessageIsVisible = false;
     private List<Kategorija> kategorijos;
     private List<AtaskaitaTopic> topics;
     private List<List<AtaskaitaEntry>> entries;
@@ -117,11 +128,19 @@ else if(topics != null)
     {
         if (model.MinKaina >= 0 && model.MinKaina <= model.MaxKaina)
         {
-            filterFormIsVisible = false;
-            topics = await ataskaitaRepository.GetAllTopics(model.Kategorija, model.Lytis, model.MinKaina, model.MaxKaina);
-            foreach(AtaskaitaTopic topic in topics)
+            try
             {
-                entries.Add(await GetEntriesForTopic(topic));
+                topics = await ataskaitaRepository.GetAllTopics(model.Kategorija, model.Lytis, model.MinKaina, model.MaxKaina);
+                foreach (AtaskaitaTopic topic in topics)
+                {
+                    entries.Add(await GetEntriesForTopic(topic));
+                }
+                errorMessageIsVisible = false;
+                filterFormIsVisible = false;
+            }
+            catch(Exception e)
+            {
+                errorMessageIsVisible = true;
             }
         }
     }
@@ -129,6 +148,11 @@ else if(topics != null)
     {
         List<AtaskaitaEntry> res = await ataskaitaRepository.GetEntriesByTopic(topic.Subkategorija, model.Lytis, model.MinKaina, model.MaxKaina);
         return res;
+    }
+
+    public void GoToAtaskaitaPage()
+    {
+        navigationManager.NavigateTo(navigationManager.Uri, true);
     }
 
     public class FilterModel
